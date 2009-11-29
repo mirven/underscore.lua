@@ -245,6 +245,18 @@ function Underscore.functions()
 	return Underscore.keys(Underscore.funcs)
 end
 
+-- add aliases
+Underscore.methods = Underscore.functions
+
+Underscore.funcs.for_each = Underscore.funcs.each
+Underscore.funcs.inject = Underscore.funcs.reduce
+Underscore.funcs.foldl = Underscore.funcs.reduce
+Underscore.funcs.filter = Underscore.funcs.select
+Underscore.funcs.every = Underscore.funcs.all
+Underscore.funcs.some = Underscore.funcs.any
+Underscore.funcs.head = Underscore.funcs.first
+Underscore.funcs.tail = Underscore.funcs.rest
+
 local function wrap_functions_for_oo_support()
 	local function value_and_chained(value_or_self)
 		local chained = false

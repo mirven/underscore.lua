@@ -136,6 +136,7 @@ assert(_({1,2,-3}):max() == 2)
 
 
 assert(_({'foo', 'bar', 'bah'}):first() == 'foo')
+assert(_({'foo', 'bar', 'bah'}):head() == 'foo')
 
 print(unpack(_({'foo', 'bar', 'bah'}):first(2)))
 print(unpack(_({'foo', 'bar', 'bah'}):first(12)))
