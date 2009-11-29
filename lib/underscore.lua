@@ -161,6 +161,29 @@ function Underscore.funcs.to_array(list)
 	return array
 end
 
+-- arrays
+function Underscore.funcs.first(array, n)
+	if n == nil then
+		return array[1]
+	else
+		local first = {}
+		n = math.min(n,#array)
+		for i=1,n do
+			first[i] = array[i]			
+		end
+		return first
+	end
+end
+
+function Underscore.funcs.rest(array, index)
+	index = index or 2
+	local rest = {}
+	for i=index,#array do
+		rest[#rest+1] = array[i]
+	end
+	return rest
+end
+
 -- object
 function Underscore.funcs.keys(obj)
 	local keys = {}

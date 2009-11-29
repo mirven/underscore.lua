@@ -133,3 +133,14 @@ assert(_({}):max() == nil)
 assert(_({1}):max() == 1)
 assert(_({1,2,3}):max() == 3)
 assert(_({1,2,-3}):max() == 2)
+
+
+assert(_({'foo', 'bar', 'bah'}):first() == 'foo')
+
+print(unpack(_({'foo', 'bar', 'bah'}):first(2)))
+print(unpack(_({'foo', 'bar', 'bah'}):first(12)))
+print(unpack(_({'foo', 'bar', 'bah'}):rest()))
+print(unpack(_({'foo', 'bar', 'bah'}):rest(3)))
+print(unpack(_({'foo', 'bar', 'bah'}):rest(13)))
+
+
