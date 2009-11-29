@@ -160,3 +160,6 @@ hello = _.wrap(hello, function(func, name)
   return "before, "..func(name)..", after"
 end)
 print(hello('moe'))
+
+
+print(unpack(_.flatten({ 0, { 1, 2 }, 3, { 4, 5, 6 }, 7, 8 })))

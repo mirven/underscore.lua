@@ -188,6 +188,20 @@ function Underscore.funcs.compact(array)
 	return Underscore.funcs.select(array, function(i) return i end)
 end
 
+function Underscore.funcs.flatten(array)
+	local all = {}
+	
+	for ele in Underscore.iter(array) do
+		if type(ele) == "table" then
+			local flattened_element = Underscore.funcs.flatten(ele)
+			Underscore.funcs.each(flattened_element, function(e) all[#all+1] = e end)
+		else
+			all[#all+1] = ele
+		end
+	end
+	return all
+end
+
 -- objects
 function Underscore.funcs.keys(obj)
 	local keys = {}
