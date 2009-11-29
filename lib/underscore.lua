@@ -25,6 +25,16 @@ function Underscore.value_or_wrap(value, chained)
 	return value
 end
 
+function Underscore.iter(list_or_iter)
+	if type(list_or_iter) == "function" then return list_or_iter end
+	
+	return coroutine.wrap(function() 
+		for i=1,#list_or_iter do
+			coroutine.yield(list_or_iter[i])
+		end
+	end)
+end
+
 -- chaining
 function Underscore:chain()
 	self.chained = true
@@ -35,49 +45,47 @@ function Underscore:value()
 	return self._val
 end
 
--- lists
+-- iter
 function Underscore.funcs.map(list, func)
 	local mapped = {}
-	for i=1,#list do
-		mapped[#mapped+1] = func(list[i])
-	end
-	
+	for i in Underscore.iter(list) do
+		mapped[#mapped+1] = func(i)
+	end	
 	return mapped
 end
 
 function Underscore.funcs.reduce(list, memo, func)	
-	for i=1,#list do
-		memo = func(memo, list[i])
+	for i in Underscore.iter(list) do
+		memo = func(memo, i)
 	end	
 	return memo
 end
 
 function Underscore.funcs.each(list, func)
-	for i=1,#list do
-		func(list[i])
+	for i in Underscore.iter(list) do
+		func(i)
 	end
 end
 
 function Underscore.funcs.detect(list, func)
-	for i=1,#list do
-		if func(list[i]) then return list[i] end
+	for i in Underscore.iter(list) do
+		if func(i) then return i end
 	end	
 	return nil	
 end
 
 function Underscore.funcs.select(list, func)
 	local selected = {}
-	for i=1,#list do
-		if func(list[i]) then selected[#selected+1] = list[i] end
+	for i in Underscore.iter(list) do
+		if func(i) then selected[#selected+1] = i end
 	end
-
 	return selected
 end
 
 function Underscore.funcs.reject(list, func)
 	local selected = {}
-	for i=1,#list do
-		if not func(list[i]) then selected[#selected+1] = list[i] end
+	for i in Underscore.iter(list) do
+		if not func(i) then selected[#selected+1] = i end
 	end
 	return selected
 end
@@ -85,8 +93,8 @@ end
 function Underscore.funcs.all(list, func)
 	-- TODO what should happen with an empty list?
 	local selected = {}
-	for i=1,#list do
-		if (func and not func(list[i])) or (not func and not list[i]) then return false end
+	for i in Underscore.iter(list) do
+		if (func and not func(i)) or (not func and not i) then return false end
 	end
 	return true
 end
@@ -94,10 +102,9 @@ end
 function Underscore.funcs.any(list, func)
 	-- TODO what should happen with an empty list?	
 	local selected = {}
-	for i=1,#list do
-		if (func and func(list[i])) or (not func and list[i]) then return true end
-	end
-	
+	for i in Underscore.iter(list) do
+		if (func and func(i)) or (not func and i) then return true end
+	end	
 	return false
 end
 

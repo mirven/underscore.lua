@@ -5,6 +5,15 @@ local l1 = { 1,2,3, }
 
 local doubler = function(i) return 2*i end
 
+function sq(n)
+	return coroutine.wrap(function() 
+		for i=1,n do
+			coroutine.yield(i*i)
+		end
+	end)
+end
+
+
 local l2 = _.map(l1, doubler)
 print(unpack(l2))
 
@@ -16,6 +25,8 @@ print(unpack(_(l1):chain():value()))
 print(unpack(_(l1):chain():map(doubler):map(doubler):value()))
 
 _.each(l1, print)
+_.each(sq(5), print)
+_(sq(5)):each(print)
 
 print(_.reduce(l1, 0, function(memo, i) return memo + i end))
 
@@ -73,3 +84,5 @@ end)();
 	assert(source.b == 2)
 	assert(source.c == nil)
 end)();
+
+print(unpack(_(sq(5)):select(function(i) return i > 10 end)))
