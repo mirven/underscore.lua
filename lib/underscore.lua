@@ -169,6 +169,15 @@ function Underscore.funcs.reverse(list)
 	return reversed
 end
 
+function Underscore.funcs.sort(iter, comparison_func)
+	local sorted = {}
+	for ele in Underscore.iter(iter) do
+		sorted[#sorted+1] = ele
+	end
+	table.sort(sorted, comparison_func)
+	return sorted
+end
+
 -- arrays
 function Underscore.funcs.first(array, n)
 	if n == nil then
