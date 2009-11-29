@@ -21,11 +21,14 @@ function Underscore.iter(list_or_iter)
 	end)
 end
 
+function Underscore.identity(value)
+	return value
+end
+
 function Underscore:no_conflict()
   _ = previous_underscore
   return self
 end
-
 
 -- chaining
 function Underscore:chain()
@@ -83,19 +86,21 @@ function Underscore.funcs.reject(list, func)
 end
 
 function Underscore.funcs.all(list, func)
+	func = func or Underscore.identity
+	
 	-- TODO what should happen with an empty list?
-	local selected = {}
 	for i in Underscore.iter(list) do
-		if (func and not func(i)) or (not func and not i) then return false end
+		if not func(i) then return false end
 	end
 	return true
 end
 
 function Underscore.funcs.any(list, func)
+	func = func or Underscore.identity
+
 	-- TODO what should happen with an empty list?	
-	local selected = {}
 	for i in Underscore.iter(list) do
-		if (func and func(i)) or (not func and i) then return true end
+		if func(i) then return true end
 	end	
 	return false
 end

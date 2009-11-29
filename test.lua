@@ -43,6 +43,15 @@ print(_({ true, false, 10}):all())
 print(_({ 5, 10, 115}):all(function(i) return i > 4 end))
 print(_({ 5, 10, 115}):all(function(i) return i > 5 end))
 
+
+print(_({ true, 1, 10}):any())
+print(_({ true, false, 10}):any())
+print(_({ nil, false, nil}):any())
+
+print(_({ 5, 10, 115}):any(function(i) return i > 4 end))
+print(_({ 5, 10, 115}):any(function(i) return i > 5 end))
+print(_({ 5, 10, 115}):any(function(i) return i > 200 end))
+
 print(unpack(_({ foo = "foov", bar = "barv" }):keys()))
 print(unpack(_.keys({ foo = "foov", bar = "barv" })))
 print(unpack(_({ foo = "foov", bar = "barv" }):values()))
