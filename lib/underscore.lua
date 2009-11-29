@@ -249,6 +249,7 @@ end
 Underscore.methods = Underscore.functions
 
 Underscore.funcs.for_each = Underscore.funcs.each
+Underscore.funcs.collect = Underscore.funcs.map
 Underscore.funcs.inject = Underscore.funcs.reduce
 Underscore.funcs.foldl = Underscore.funcs.reduce
 Underscore.funcs.filter = Underscore.funcs.select
