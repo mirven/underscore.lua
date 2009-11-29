@@ -118,6 +118,14 @@ function Underscore.funcs.invoke(list, functionName, ...)
 	end	
 end
 
+function Underscore.funcs.pluck(list, propertyName)
+	local properties = {}
+	for i in Underscore.iter(list) do
+		properties[#properties+1] = i[propertyName]
+	end	
+	return properties
+end
+
 -- object
 function Underscore.funcs.keys(obj)
 	local keys = {}

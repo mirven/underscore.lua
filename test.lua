@@ -116,6 +116,10 @@ function Person:print_w_greeting(greeting)
 	print(greeting, self.name)
 end
 
-_.invoke({Person:new("Tom"), Person:new("Dick"), Person:new("Harry") }, "print")
-_.invoke({Person:new("Tom"), Person:new("Dick"), Person:new("Harry") }, "print_w_greeting", "hello")
+local people = { Person:new("Tom"), Person:new("Dick"), Person:new("Harry") }
+
+_.invoke(people, "print")
+_.invoke(people, "print_w_greeting", "hello")
+
+print(unpack(_.pluck(people, "name")))
 
