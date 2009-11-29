@@ -52,7 +52,6 @@ function Underscore.funcs.reduce(list, memo, func)
 	return memo
 end
 
-
 function Underscore.funcs.each(list, func)
 	for i=1,#list do
 		func(list[i])
