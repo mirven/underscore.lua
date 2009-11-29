@@ -11,20 +11,6 @@ function Underscore:new(value, chained)
 	return setmetatable({ _val = value, chained = chained or false }, self)
 end
 
-function Underscore.value_and_chained(value_or_self)
-	local chained = false
-	if getmetatable(value_or_self) == Underscore then 
-		chained = value_or_self.chained
-		value_or_self = value_or_self._val 
-	end
-	return value_or_self, chained
-end
-
-function Underscore.value_or_wrap(value, chained)
-	if chained then value = Underscore:new(value, true) end
-	return value
-end
-
 function Underscore.iter(list_or_iter)
 	if type(list_or_iter) == "function" then return list_or_iter end
 	
@@ -34,6 +20,12 @@ function Underscore.iter(list_or_iter)
 		end
 	end)
 end
+
+function Underscore:no_conflict()
+  _ = previous_underscore
+  return self
+end
+
 
 -- chaining
 function Underscore:chain()
@@ -140,16 +132,29 @@ function Underscore.functions()
 	return Underscore.keys(Underscore.funcs)
 end
 
-for fn, func in pairs(Underscore.funcs) do
-	Underscore[fn] = function(obj_or_self, ...)
-		local obj, chained = Underscore.value_and_chained(obj_or_self)	
-		return Underscore.value_or_wrap(func(obj, ...), chained)		
-	end	 
+local function wrap_functions_for_oo_support()
+	local function value_and_chained(value_or_self)
+		local chained = false
+		if getmetatable(value_or_self) == Underscore then 
+			chained = value_or_self.chained
+			value_or_self = value_or_self._val 
+		end
+		return value_or_self, chained
+	end
+
+	local function value_or_wrap(value, chained)
+		if chained then value = Underscore:new(value, true) end
+		return value
+	end
+
+	for fn, func in pairs(Underscore.funcs) do
+		Underscore[fn] = function(obj_or_self, ...)
+			local obj, chained = value_and_chained(obj_or_self)	
+			return value_or_wrap(func(obj, ...), chained)		
+		end	 
+	end
 end
 
-function Underscore:no_conflict()
-  _ = previous_underscore
-  return self
-end
+wrap_functions_for_oo_support()
 
 _ = Underscore:new()

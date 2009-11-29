@@ -86,3 +86,6 @@ end)();
 end)();
 
 print(unpack(_(sq(5)):select(function(i) return i > 10 end)))
+
+
+for ele in _.iter { 'a', 'b', 'c' } do print(ele) end
