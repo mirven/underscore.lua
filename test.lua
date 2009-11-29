@@ -163,11 +163,10 @@ welcome('moe')
 
 
 local hello = function(name) return "hello: "..name end
-hello = _.wrap(hello, function(func, name)
-  return "before, "..func(name)..", after"
+hello = _.wrap(hello, function(func, ...)
+  return "before, "..func(...)..", after"
 end)
 print(hello('moe'))
-
 
 print(unpack(_.flatten({ 0, { 1, 2 }, 3, { 4, 5, 6 }, 7, 8 })))
 

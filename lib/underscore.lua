@@ -21,6 +21,9 @@ function Underscore.iter(list_or_iter)
 	end)
 end
 
+--- Utitlity function
+-- @name _.identity
+-- @param value blah blah
 function Underscore.identity(value)
 	return value
 end
