@@ -45,3 +45,31 @@ assert(not _.is_empty({ 5 }))
 assert(not _.is_empty({ a = 10 }))
 
 print(unpack(_.functions()))
+;
+(function()
+	local source = { a = 1, b = 2 }
+	local dest = { c = 3 }
+
+	_(dest):extend(source)
+	assert(dest.a == 1)
+	assert(dest.b == 2)
+	assert(dest.c == 3)
+
+	assert(source.a == 1)
+	assert(source.b == 2)
+	assert(source.c == nil)
+end)();
+
+(function()
+	local source = { a = 1, b = 2 }
+	local dest = { c = 3 }
+
+	_.extend(dest, source)
+	assert(dest.a == 1)
+	assert(dest.b == 2)
+	assert(dest.c == 3)
+
+	assert(source.a == 1)
+	assert(source.b == 2)
+	assert(source.c == nil)
+end)();
