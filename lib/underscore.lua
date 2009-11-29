@@ -21,13 +21,17 @@ function Underscore.iter(list_or_iter)
 	end)
 end
 
---- Utitlity function
+--- Identity function
 -- @name _.identity
--- @param value blah blah
+-- @param value any object
+-- @return value
 function Underscore.identity(value)
 	return value
 end
 
+--- Restores the _ variable and returns the _ object so that 
+-- it can be assigned to another variable
+-- @name _:no_conflict
 function Underscore:no_conflict()
   _ = previous_underscore
   return self
