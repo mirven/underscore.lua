@@ -184,6 +184,10 @@ function Underscore.funcs.rest(array, index)
 	return rest
 end
 
+function Underscore.funcs.compact(array)
+	return Underscore.funcs.select(array, function(i) return i end)
+end
+
 -- object
 function Underscore.funcs.keys(obj)
 	local keys = {}
