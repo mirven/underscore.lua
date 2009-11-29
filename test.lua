@@ -98,3 +98,6 @@ print(unpack(_(sq(5)):select(function(i) return i > 10 end)))
 
 
 for ele in _.iter { 'a', 'b', 'c' } do print(ele) end
+
+assert(_.include({ 'a', 'b', 'c'}, 'a'))
+assert(not _.include({ 'a', 'b', 'c'}, 'd'))

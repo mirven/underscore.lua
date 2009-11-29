@@ -105,6 +105,13 @@ function Underscore.funcs.any(list, func)
 	return false
 end
 
+function Underscore.funcs.include(list, value)
+	for i in Underscore.iter(list) do
+		if i == value then return true end
+	end	
+	return false
+end
+
 -- object
 function Underscore.funcs.keys(obj)
 	local keys = {}
