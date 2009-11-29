@@ -3,21 +3,21 @@ local previous_underscore = _
 local Underscore = { funcs = {} }
 Underscore.__index = Underscore
 
-function Underscore.__call(_, o)
-	return Underscore:new(o)
+function Underscore.__call(_, value)
+	return Underscore:new(value)
 end
 
 function Underscore:new(value, chained)
 	return setmetatable({ _val = value, chained = chained or false }, self)
 end
 
-function Underscore.value_and_chained(list_or_self)
+function Underscore.value_and_chained(value_or_self)
 	local chained = false
-	if getmetatable(list_or_self) == Underscore then 
-		chained = list_or_self.chained
-		list_or_self = list_or_self._val 
+	if getmetatable(value_or_self) == Underscore then 
+		chained = value_or_self.chained
+		value_or_self = value_or_self._val 
 	end
-	return list_or_self, chained
+	return value_or_self, chained
 end
 
 function Underscore.value_or_wrap(value, chained)
@@ -103,7 +103,6 @@ function Underscore.funcs.any(list, func)
 end
 
 -- object
-
 function Underscore.funcs.keys(obj)
 	local keys = {}
 	for k,v in pairs(obj) do
@@ -137,8 +136,7 @@ end
 
 for fn, func in pairs(Underscore.funcs) do
 	Underscore[fn] = function(obj_or_self, ...)
-		local obj, chained = Underscore.value_and_chained(obj_or_self)
-	
+		local obj, chained = Underscore.value_and_chained(obj_or_self)	
 		return Underscore.value_or_wrap(func(obj, ...), chained)		
 	end	 
 end
@@ -148,7 +146,4 @@ function Underscore:no_conflict()
   return self
 end
 
-
 _ = Underscore:new()
-
-
