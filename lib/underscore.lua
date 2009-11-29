@@ -233,6 +233,14 @@ function Underscore.funcs.compose(...)
 	end
 end
 
+function Underscore.funcs.wrap(func, wrapper)
+	return function(...)
+		return wrapper(func, ...)
+	end
+end
+
+--
+
 function Underscore.functions() 
 	return Underscore.keys(Underscore.funcs)
 end

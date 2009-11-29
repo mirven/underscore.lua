@@ -152,3 +152,10 @@ local exclaim = function(statement) return statement.."!" end
 local welcome = _.compose(print, greet, exclaim)
 
 welcome('moe')
+
+
+local hello = function(name) return "hello: "..name end
+hello = _.wrap(hello, function(func, name)
+  return "before, "..func(name)..", after"
+end)
+print(hello('moe'))
