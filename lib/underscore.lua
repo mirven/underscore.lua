@@ -188,7 +188,7 @@ function Underscore.funcs.compact(array)
 	return Underscore.funcs.select(array, function(i) return i end)
 end
 
--- object
+-- objects
 function Underscore.funcs.keys(obj)
 	local keys = {}
 	for k,v in pairs(obj) do
@@ -214,6 +214,23 @@ end
 
 function Underscore.funcs.is_empty(obj)
 	return next(obj) == nil
+end
+
+-- functions
+function Underscore.funcs.compose(...)
+	local function call_funcs(funcs, ...)
+		if #funcs > 1 then
+			return funcs[1](call_funcs(_.rest(funcs), ...))
+		else
+			return funcs[1](...)
+		end
+	end
+	
+	local funcs = {...}
+	
+	return function(...)
+		return call_funcs(funcs, ...)
+	end
 end
 
 function Underscore.functions() 
