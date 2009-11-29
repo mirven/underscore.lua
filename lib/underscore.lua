@@ -126,6 +126,14 @@ function Underscore.funcs.pluck(list, propertyName)
 	return properties
 end
 
+function Underscore.funcs.to_array(list)
+	local array = {}
+	for i in Underscore.iter(list) do
+		array[#array+1] = i
+	end	
+	return array
+end
+
 -- object
 function Underscore.funcs.keys(obj)
 	local keys = {}

@@ -123,3 +123,5 @@ _.invoke(people, "print_w_greeting", "hello")
 
 print(unpack(_.pluck(people, "name")))
 
+print(unpack(_(sq(5)):to_array()))
+
