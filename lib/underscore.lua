@@ -1,4 +1,4 @@
-Underscore = {}
+Underscore = { funcs = {} }
 Underscore.__index = Underscore
 
 function Underscore.__call(_, o)
@@ -34,165 +34,117 @@ function Underscore:value()
 end
 
 -- lists
-function Underscore.map(list_or_self, func)
-	local list, chained = Underscore.value_and_chained(list_or_self)
-	
+function Underscore.funcs.map(list, func)
 	local mapped = {}
 	for i=1,#list do
 		mapped[#mapped+1] = func(list[i])
 	end
 	
-	return Underscore.value_or_wrap(mapped, chained)
+	return mapped
 end
 
-function Underscore.reduce(list_or_self, memo, func)	
-	local list, chained = Underscore.value_and_chained(list_or_self)
-	
+function Underscore.funcs.reduce(list, memo, func)	
 	for i=1,#list do
 		memo = func(memo, list[i])
-	end
-	
-	return Underscore.value_or_wrap(memo, chained)
+	end	
+	return memo
 end
 
 
-function Underscore.each(list_or_self, func)
-	local list, chained = Underscore.value_and_chained(list_or_self)
+function Underscore.funcs.each(list, func)
 	for i=1,#list do
 		func(list[i])
 	end
 end
 
-function Underscore.detect(list_or_self, func)
-	local list, chained = Underscore.value_and_chained(list_or_self)
+function Underscore.funcs.detect(list, func)
 	for i=1,#list do
-		if func(list[i]) then return Underscore.value_or_wrap(list[i], chained) end
-	end
-	
-	return Underscore.value_or_wrap(nil, chained)
-	
+		if func(list[i]) then return list[i] end
+	end	
+	return nil	
 end
 
-function Underscore.select(list_or_self, func)
-	local list, chained = Underscore.value_and_chained(list_or_self)
-	
+function Underscore.funcs.select(list, func)
 	local selected = {}
 	for i=1,#list do
 		if func(list[i]) then selected[#selected+1] = list[i] end
 	end
 
-	return Underscore.value_or_wrap(selected, chained)
+	return selected
 end
 
-function Underscore.reject(list_or_self, func)
-	local list, chained = Underscore.value_and_chained(list_or_self)
-	
+function Underscore.funcs.reject(list, func)
 	local selected = {}
 	for i=1,#list do
 		if not func(list[i]) then selected[#selected+1] = list[i] end
 	end
-
-	return Underscore.value_or_wrap(selected, chained)
+	return selected
 end
 
-function Underscore.all(list_or_self, func)
-	local list, chained = Underscore.value_and_chained(list_or_self)
-
+function Underscore.funcs.all(list, func)
 	-- TODO what should happen with an empty list?
-
 	local selected = {}
 	for i=1,#list do
-		if (func and not func(list[i])) or (not func and not list[i]) then return Underscore.value_or_wrap(false, chained) end
+		if (func and not func(list[i])) or (not func and not list[i]) then return false end
 	end
-
-	return Underscore.value_or_wrap(true, chained)
+	return true
 end
 
-function Underscore.any(list_or_self, func)
-	local list, chained = Underscore.value_and_chained(list_or_self)
-	
-	-- TODO what should happen with an empty list?
-	
+function Underscore.funcs.any(list, func)
+	-- TODO what should happen with an empty list?	
 	local selected = {}
 	for i=1,#list do
-		if (func and func(list[i])) or (not func and list[i]) then return Underscore.value_or_wrap(true, chained) end
+		if (func and func(list[i])) or (not func and list[i]) then return true end
 	end
 	
-	return Underscore.value_or_wrap(false, chained)
+	return false
 end
 
 -- object
 
-function Underscore.keys(obj_or_self)
-	local obj, chained = Underscore.value_and_chained(obj_or_self)
-
+function Underscore.funcs.keys(obj)
 	local keys = {}
 	for k,v in pairs(obj) do
 		keys[#keys+1] = k
 	end
-
-	return Underscore.value_or_wrap(keys, chained)
+	return keys
 end
 
-function Underscore.values(obj_or_self)
-	local obj, chained = Underscore.value_and_chained(obj_or_self)
-
+function Underscore.funcs.values(obj)
 	local values = {}
 	for k,v in pairs(obj) do
 		values[#values+1] = v
 	end
-
-	return Underscore.value_or_wrap(values, chained)
+	return values
 end
 
-function Underscore.extend(obj_or_self, source)
-	local obj, chained = Underscore.value_and_chained(obj_or_self)
-
+function Underscore.funcs.extend(obj, source)
 	for k,v in pairs(source) do
 		obj[k] = v
-	end
-
-	return Underscore.value_or_wrap(obj, chained)
+	end	
+	return obj
 end
 
-function Underscore.is_empty(obj_or_self)
-	local obj, chained = Underscore.value_and_chained(obj_or_self)
-	
-	return Underscore.value_or_wrap(next(obj) == nil, chained)	
+function Underscore.funcs.is_empty(obj)
+	return next(obj) == nil
 end
 
 function Underscore.functions() 
-	return {
-		"map",
-		"reduce",
-		"inject",
-		"each",
-		"detect",
-		"select",
-		"reject",
-		"any",
-		"all",
-		"keys",
-		"values",
-		"extend",
-		"is_empty"
-	}
+	return Underscore.keys(Underscore.funcs)
 end
 
--- for i, fn in ipairs(Underscore.functions()) do
--- 	local orig_func = Underscore[fn]
--- 	Underscore[fn] = function(obj_or_self, ...)
--- 		local obj, chained = Underscore.value_and_chained(obj_or_self)
--- 	
--- 		return Underscore.value_or_wrap(orig_func(obj, ...), chained)		
--- 	end	 
--- end
-
-
+for fn, func in pairs(Underscore.funcs) do
+	Underscore[fn] = function(obj_or_self, ...)
+		local obj, chained = Underscore.value_and_chained(obj_or_self)
+	
+		return Underscore.value_or_wrap(func(obj, ...), chained)		
+	end	 
+end
 
 _ = Underscore:new()
 
---- 
+
+
 local l1 = { 1,2,3, }
 
 local doubler = function(i) return 2*i end
@@ -216,6 +168,7 @@ print(_(l1):detect(function(i) return i % 2 == 0 end))
 
 print(unpack(_(l1):select(function(i) return i % 2 == 1 end)))
 print(unpack(_(l1):reject(function(i) return i % 2 == 1 end)))
+print(unpack(_(l1):reject(function(i) return i % 2 == 0 end)))
 
 print(_({ true, 1, 10}):all())
 print(_({ true, false, 10}):all())
@@ -224,7 +177,9 @@ print(_({ 5, 10, 115}):all(function(i) return i > 4 end))
 print(_({ 5, 10, 115}):all(function(i) return i > 5 end))
 
 print(unpack(_({ foo = "foov", bar = "barv" }):keys()))
+print(unpack(_.keys({ foo = "foov", bar = "barv" })))
 print(unpack(_({ foo = "foov", bar = "barv" }):values()))
+print(unpack(_.values({ foo = "foov", bar = "barv" })))
 
 assert(_({}):is_empty())
 assert(not _({ 5 }):is_empty())
@@ -232,3 +187,5 @@ assert(not _({ a = 10 }):is_empty())
 assert(_.is_empty({}))
 assert(not _.is_empty({ 5 }))
 assert(not _.is_empty({ a = 10 }))
+
+print(unpack(_.functions()))
