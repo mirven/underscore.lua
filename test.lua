@@ -1,6 +1,5 @@
 require 'lib.underscore'
 
-
 local l1 = { 1,2,3, }
 
 local doubler = function(i) return 2*i end
@@ -125,3 +124,12 @@ print(unpack(_.pluck(people, "name")))
 
 print(unpack(_(sq(5)):to_array()))
 
+assert(_({}):min() == nil)
+assert(_({1}):min() == 1)
+assert(_({1,2,3}):min() == 1)
+assert(_({1,2,-3}):min() == -3)
+
+assert(_({}):max() == nil)
+assert(_({1}):max() == 1)
+assert(_({1,2,3}):max() == 3)
+assert(_({1,2,-3}):max() == 2)

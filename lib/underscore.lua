@@ -126,6 +126,33 @@ function Underscore.funcs.pluck(list, propertyName)
 	return properties
 end
 
+function Underscore.funcs.min(list, func)
+	func = func or Underscore.identity
+	local min = nil
+	for i in Underscore.iter(list) do
+		if min then
+			min = math.min(min, func(i))
+		else
+			min = func(i)
+		end
+	end
+	return min
+end
+
+function Underscore.funcs.max(list, func)
+	func = func or Underscore.identity
+	
+	local max = nil
+	for i in Underscore.iter(list) do
+		if max then
+			max = math.max(max, func(i))
+		else
+			max = func(i)
+		end
+	end
+	return max
+end
+
 function Underscore.funcs.to_array(list)
 	local array = {}
 	for i in Underscore.iter(list) do
