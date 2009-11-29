@@ -98,6 +98,7 @@ end
 -- @name _.all
 -- @param list items
 -- @param func (optional) 
+-- @usage _.all({2,4,8}, function(i) return i%2 end)
 function Underscore.funcs.all(list, func)
 	func = func or Underscore.identity
 	
