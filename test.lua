@@ -101,3 +101,21 @@ for ele in _.iter { 'a', 'b', 'c' } do print(ele) end
 
 assert(_.include({ 'a', 'b', 'c'}, 'a'))
 assert(not _.include({ 'a', 'b', 'c'}, 'd'))
+
+Person = {}; Person.__index = Person
+
+function Person:new(name)
+	return setmetatable({ name=name }, self)
+end
+
+function Person:print()
+	print(self.name)
+end
+
+function Person:print_w_greeting(greeting)
+	print(greeting, self.name)
+end
+
+_.invoke({Person:new("Tom"), Person:new("Dick"), Person:new("Harry") }, "print")
+_.invoke({Person:new("Tom"), Person:new("Dick"), Person:new("Harry") }, "print_w_greeting", "hello")
+

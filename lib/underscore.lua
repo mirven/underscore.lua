@@ -112,6 +112,12 @@ function Underscore.funcs.include(list, value)
 	return false
 end
 
+function Underscore.funcs.invoke(list, functionName, ...)
+	for i in Underscore.iter(list) do
+		i[functionName](i, ...)
+	end	
+end
+
 -- object
 function Underscore.funcs.keys(obj)
 	local keys = {}
