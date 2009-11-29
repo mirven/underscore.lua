@@ -1,3 +1,5 @@
+--- Underscore is a set of utility functions for dealing with 
+-- iterators, arrays, tables, and functions.
 local previous_underscore = _
 
 local Underscore = { funcs = {} }
@@ -92,6 +94,10 @@ function Underscore.funcs.reject(list, func)
 	return selected
 end
 
+--- Returns true if func(item) returns true for all item in items
+-- @name _.all
+-- @param list items
+-- @param func (optional) 
 function Underscore.funcs.all(list, func)
 	func = func or Underscore.identity
 	
