@@ -161,6 +161,14 @@ function Underscore.funcs.to_array(list)
 	return array
 end
 
+function Underscore.funcs.reverse(list)
+	local reversed = {}
+	for i in Underscore.iter(list) do
+		table.insert(reversed, 1, i)
+	end	
+	return reversed
+end
+
 -- arrays
 function Underscore.funcs.first(array, n)
 	if n == nil then
