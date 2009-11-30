@@ -211,7 +211,10 @@ end
 -- @param list
 -- @param func
 -- @return the minimum value
--- 
+-- @usage _.min({ 5, 2, 15})
+-- => 2
+-- _.min({ {age=5}, {age=2}, {age=15} }, function(p) return p.age end)
+-- => {age=2}
 function Underscore.funcs.min(list, func)
 	func = func or Underscore.identity
 	local min, min_value = nil, nil
@@ -230,6 +233,16 @@ function Underscore.funcs.min(list, func)
 	return min
 end
 
+--- Returns the item with the largest value. If a func i spassed it will be used on each value 
+-- to generate the criterion by which the value is ranked.
+-- @name _.max
+-- @param list
+-- @param func
+-- @return the maximum value
+-- @usage _.max({ 5, 2, 15})
+-- => 15
+-- _.max({ {age=5}, {age=2}, {age=15} }, function(p) return p.age end)
+-- => {age=15}
 function Underscore.funcs.max(list, func)
 	func = func or Underscore.identity
 	
@@ -249,6 +262,13 @@ function Underscore.funcs.max(list, func)
 	return max
 end
 
+--- Converts the list to an array. This is useful for creating an
+-- array from a generator.
+-- @name _.to_array
+-- @param list
+-- @return a new array
+-- @usage _.to_array(string.gmatch("dog cat goat", "%S+"))
+-- => { "dog", "cat", "goat" }
 function Underscore.funcs.to_array(list)
 	local array = {}
 	for i in Underscore.iter(list) do
@@ -257,6 +277,13 @@ function Underscore.funcs.to_array(list)
 	return array
 end
 
+--- Iterates over all the items and returns a new array with the items
+-- in reverse order
+-- @name _.reverse
+-- @param list
+-- @return a new array
+-- @usage _.reverse({ 1, 2, 3})
+-- => { 3, 2, 1 }
 function Underscore.funcs.reverse(list)
 	local reversed = {}
 	for i in Underscore.iter(list) do
