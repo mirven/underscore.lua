@@ -1,1 +1,1 @@
-A Lua version of http://documentcloud.github.com/underscore/, documenation will be available shortly at http://mirven.github.com/underscore.lua/.
+A Lua version of http://documentcloud.github.com/underscore/, see http://mirven.github.com/underscore.lua/ for more information.
