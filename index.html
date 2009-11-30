@@ -116,17 +116,17 @@
             
             <tr>
               <td class="name" nowrap><a href="#_.functions">_.functions</a>&nbsp;()</td>
-              <td class="summary">Returns an array of all function names in this library </td>
+              <td class="summary">Returns an array of all function names in this library.</td>
             </tr>
             
             <tr>
               <td class="name" nowrap><a href="#_.identity">_.identity</a>&nbsp;(value)</td>
-              <td class="summary">Identity function </td>
+              <td class="summary">Identity function.</td>
             </tr>
             
             <tr>
               <td class="name" nowrap><a href="#_.include">_.include</a>&nbsp;(list, value)</td>
-              <td class="summary">Returns true if the list include's value </td>
+              <td class="summary">Returns true if the list include's value.</td>
             </tr>
             
             <tr>
@@ -141,7 +141,7 @@
             
             <tr>
               <td class="name" nowrap><a href="#_.keys">_.keys</a>&nbsp;(obj)</td>
-              <td class="summary">Returns an array of all the property names in a table </td>
+              <td class="summary">Returns an array of all the property names in a table.</td>
             </tr>
             
             <tr>
@@ -161,12 +161,12 @@
             
             <tr>
               <td class="name" nowrap><a href="#_.pluck">_.pluck</a>&nbsp;(list, propertyName)</td>
-              <td class="summary">An convenient version of the common use-case of map: extracting a list of properties </td>
+              <td class="summary">An convenient version of the common use-case of map: extracting a list of properties.</td>
             </tr>
             
             <tr>
               <td class="name" nowrap><a href="#_.reduce">_.reduce</a>&nbsp;(list, memo, func)</td>
-              <td class="summary">Reduces a list of items down to a singular value </td>
+              <td class="summary">Reduces a list of items down to a singular value.</td>
             </tr>
             
             <tr>
@@ -181,7 +181,7 @@
             
             <tr>
               <td class="name" nowrap><a href="#_.reverse">_.reverse</a>&nbsp;(list)</td>
-              <td class="summary">Iterates over all the items and returns a new array with the items in reverse order </td>
+              <td class="summary">Iterates over all the items and returns a new array with the items in reverse order.</td>
             </tr>
             
             <tr>
@@ -191,7 +191,7 @@
             
             <tr>
               <td class="name" nowrap><a href="#_.slice">_.slice</a>&nbsp;(array, start_index, length)</td>
-              <td class="summary">Returns a section of an array starting with start_index of length items length </td>
+              <td class="summary">Returns a section of an array starting with start_index of length items length.</td>
             </tr>
             
             <tr>
@@ -226,7 +226,7 @@
             
             <tr>
               <td class="name" nowrap><a href="#_:no_conflict">_:no_conflict</a>&nbsp;()</td>
-              <td class="summary">Restores the _ variable and returns the _ object so that it can be assigned to another variable </td>
+              <td class="summary">Restores the _ variable and returns the _ object so that it can be assigned to another variable.</td>
             </tr>
             
             <tr>
@@ -473,7 +473,7 @@ the flattened array
 
 <dt><a name="_.functions"></a><strong>_.functions</strong>&nbsp;()</dt>
 <dd>
-Returns an array of all function names in this library
+Returns an array of all function names in this library.
 
 
 
@@ -493,7 +493,7 @@ _.functions() => { 'each', 'map', 'reduce', ... }
 
 <dt><a name="_.identity"></a><strong>_.identity</strong>&nbsp;(value)</dt>
 <dd>
-Identity function
+Identity function. This function looks useless, but is used throughout Underscore as a default.
 
 
 <h3>Parameters</h3>
@@ -507,6 +507,9 @@ Identity function
 
 
 
+
+<h3>Usage:</h3>
+_.identity("foo") => "foo"
 
 
 
@@ -522,7 +525,7 @@ value
 
 <dt><a name="_.include"></a><strong>_.include</strong>&nbsp;(list, value)</dt>
 <dd>
-Returns true if the list include's value
+Returns true if the list include's value.
 
 
 <h3>Parameters</h3>
@@ -621,7 +624,7 @@ _.is_empty({}) => true -.is_empty({ name = "moe" }) => false
 
 <dt><a name="_.keys"></a><strong>_.keys</strong>&nbsp;(obj)</dt>
 <dd>
-Returns an array of all the property names in a table
+Returns an array of all the property names in a table.
 
 
 <h3>Parameters</h3>
@@ -758,7 +761,7 @@ the minimum value
 
 <dt><a name="_.pluck"></a><strong>_.pluck</strong>&nbsp;(list, propertyName)</dt>
 <dd>
-An convenient version of the common use-case of map: extracting a list of properties
+An convenient version of the common use-case of map: extracting a list of properties.
 
 
 <h3>Parameters</h3>
@@ -794,7 +797,7 @@ new array containing the property value corresponding to the propery name on eac
 
 <dt><a name="_.reduce"></a><strong>_.reduce</strong>&nbsp;(list, memo, func)</dt>
 <dd>
-Reduces a list of items down to a singular value
+Reduces a list of items down to a singular value.
 
 
 <h3>Parameters</h3>
@@ -897,7 +900,7 @@ an array with the remaining items
 
 <dt><a name="_.reverse"></a><strong>_.reverse</strong>&nbsp;(list)</dt>
 <dd>
-Iterates over all the items and returns a new array with the items in reverse order
+Iterates over all the items and returns a new array with the items in reverse order.
 
 
 <h3>Parameters</h3>
@@ -959,7 +962,7 @@ Looks through a list and returns a new array containing all items that match a t
 
 <dt><a name="_.slice"></a><strong>_.slice</strong>&nbsp;(array, start_index, length)</dt>
 <dd>
-Returns a section of an array starting with start_index of length items length
+Returns a section of an array starting with start_index of length items length.
 
 
 <h3>Parameters</h3>
@@ -1189,7 +1192,7 @@ Starts chaining
 
 <dt><a name="_:no_conflict"></a><strong>_:no_conflict</strong>&nbsp;()</dt>
 <dd>
-Restores the _ variable and returns the _ object so that it can be assigned to another variable
+Restores the _ variable and returns the _ object so that it can be assigned to another variable.
 
 
 
