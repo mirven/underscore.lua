@@ -217,20 +217,20 @@ end
 -- => {age=2}
 function Underscore.funcs.min(list, func)
 	func = func or Underscore.identity
-	local min, min_value = nil, nil
-	for i in Underscore.iter(list) do
-		if min == nil then
-			min = i
-			min_value = func(i)
+	
+	return Underscore.funcs.reduce(list, { item = nil, value = nil }, function(min, item) 
+		if min.item == nil then
+			min.item = item
+			min.value = func(item)
 		else
-			local value = func(i)
-			if value < min_value then
-				min = i
-				min_value = func(i)
+			local value = func(item)
+			if value < min.value then
+				min.item = item
+				min.value = value
 			end
 		end
-	end
-	return min
+		return min
+	end).item
 end
 
 --- Returns the item with the largest value. If a func i spassed it will be used on each value 
@@ -246,20 +246,19 @@ end
 function Underscore.funcs.max(list, func)
 	func = func or Underscore.identity
 	
-	local max, max_value = nil, nil
-	for i in Underscore.iter(list) do
-		if max == nil then
-			max = i
-			max_value = func(i)
+	return Underscore.funcs.reduce(list, { item = nil, value = nil }, function(max, item) 
+		if max.item == nil then
+			max.item = item
+			max.value = func(item)
 		else
-			local value = func(i)
-			if value > max_value then
-				max = i
-				max_value = func(i)
+			local value = func(item)
+			if value > max.value then
+				max.item = item
+				max.value = value
 			end
 		end
-	end
-	return max
+		return max
+	end).item
 end
 
 --- Converts the list to an array. This is useful for creating an
