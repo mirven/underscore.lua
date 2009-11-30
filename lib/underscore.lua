@@ -40,16 +40,39 @@ function Underscore:no_conflict()
 end
 
 -- chaining
+
+--- Starts chaining
+-- @name _:chain()
 function Underscore:chain()
 	self.chained = true
 	return self
 end
 
+--- Returns the value of a chained object
+-- @name _:value()
 function Underscore:value()
 	return self._val
 end
 
 -- iter
+
+--- Calls func on each item in list
+-- @name _.each()
+-- @param list
+-- @param func
+-- @usage _.each({1,2,3}, print)
+function Underscore.funcs.each(list, func)
+	for i in Underscore.iter(list) do
+		func(i)
+	end
+end
+
+--- Produces a new array by mapping each value in iter
+-- through a transformation function.
+-- @name _.map()
+-- @param list
+-- @param func
+-- @usage _.map({1,2,3}, function(i) return i*2 end)
 function Underscore.funcs.map(list, func)
 	local mapped = {}
 	for i in Underscore.iter(list) do
@@ -58,6 +81,12 @@ function Underscore.funcs.map(list, func)
 	return mapped
 end
 
+--- Reduces a list of items down to a singular value
+-- @name _.reduce()
+-- @param list items to perform the reduction on
+-- @param memo initial state of reduction and each sucessive state should be returned by func
+-- @param func reduction function which takes two parameters, the current state and value
+-- @usage _.reduce({1,2,3}, 0, function(memo, i) return memo+i end)
 function Underscore.funcs.reduce(list, memo, func)	
 	for i in Underscore.iter(list) do
 		memo = func(memo, i)
@@ -65,12 +94,9 @@ function Underscore.funcs.reduce(list, memo, func)
 	return memo
 end
 
-function Underscore.funcs.each(list, func)
-	for i in Underscore.iter(list) do
-		func(i)
-	end
-end
-
+--- Looks through a list returning the first element that matches 
+-- a truth function. The function returns as soon as it finds an
+-- acceptable element and doesn't traverse the entire list.
 function Underscore.funcs.detect(list, func)
 	for i in Underscore.iter(list) do
 		if func(i) then return i end
