@@ -113,9 +113,8 @@ function Underscore.funcs.include(list, value)
 end
 
 function Underscore.funcs.invoke(list, functionName, ...)
-	for i in Underscore.iter(list) do
-		i[functionName](i, ...)
-	end	
+	local args = {...}
+	Underscore.funcs.each(list, function(i) i[functionName](i, unpack(args)) end)
 end
 
 function Underscore.funcs.pluck(list, propertyName)
