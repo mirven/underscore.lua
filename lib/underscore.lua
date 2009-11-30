@@ -180,12 +180,9 @@ function Underscore.funcs.reverse(list)
 end
 
 function Underscore.funcs.sort(iter, comparison_func)
-	local sorted = {}
-	for ele in Underscore.iter(iter) do
-		sorted[#sorted+1] = ele
-	end
-	table.sort(sorted, comparison_func)
-	return sorted
+	local array = Underscore.funcs.to_array(iter)
+	table.sort(array, comparison_func)
+	return array
 end
 
 -- arrays
