@@ -42,14 +42,14 @@ end
 -- chaining
 
 --- Starts chaining
--- @name _:chain()
+-- @name _:chain
 function Underscore:chain()
 	self.chained = true
 	return self
 end
 
 --- Returns the value of a chained object
--- @name _:value()
+-- @name _:value
 function Underscore:value()
 	return self._val
 end
@@ -57,7 +57,7 @@ end
 -- iter
 
 --- Calls func on each item in list
--- @name _.each()
+-- @name _.each
 -- @param list
 -- @param func
 -- @usage _.each({1,2,3}, print)
@@ -69,7 +69,7 @@ end
 
 --- Produces a new array by mapping each value in iter
 -- through a transformation function.
--- @name _.map()
+-- @name _.map
 -- @param list
 -- @param func
 -- @usage _.map({1,2,3}, function(i) return i*2 end)
@@ -82,7 +82,7 @@ function Underscore.funcs.map(list, func)
 end
 
 --- Reduces a list of items down to a singular value
--- @name _.reduce()
+-- @name _.reduce
 -- @param list items to perform the reduction on
 -- @param memo initial state of reduction and each sucessive state should be returned by func
 -- @param func reduction function which takes two parameters, the current state and value
@@ -97,6 +97,9 @@ end
 --- Looks through a list returning the first element that matches 
 -- a truth function. The function returns as soon as it finds an
 -- acceptable element and doesn't traverse the entire list.
+-- @name _.detect
+-- @param list
+-- @param func
 function Underscore.funcs.detect(list, func)
 	for i in Underscore.iter(list) do
 		if func(i) then return i end
@@ -104,6 +107,11 @@ function Underscore.funcs.detect(list, func)
 	return nil	
 end
 
+--- Looks through a list and returns a new array containing all
+-- items that match a truth function.
+-- @name _.select
+-- @param list
+-- @param func
 function Underscore.funcs.select(list, func)
 	local selected = {}
 	for i in Underscore.iter(list) do
@@ -112,6 +120,11 @@ function Underscore.funcs.select(list, func)
 	return selected
 end
 
+--- Looks through alist and returns a new array containing all
+-- items that don't match the truth function.
+-- @name _.reject
+-- @param list
+-- @param func
 function Underscore.funcs.reject(list, func)
 	local selected = {}
 	for i in Underscore.iter(list) do
@@ -120,7 +133,7 @@ function Underscore.funcs.reject(list, func)
 	return selected
 end
 
---- Returns true if func(item) returns true for all item in items
+--- Returns true if func(item) returns true for all item in items.
 -- @name _.all
 -- @param list items
 -- @param func (optional) 
@@ -135,6 +148,11 @@ function Underscore.funcs.all(list, func)
 	return true
 end
 
+--- Returns true if func(item) returns true for all item in items.
+-- @name _.any
+-- @param list items
+-- @param func (optional) 
+-- @usage _.any({2,4,8}, function(i) return i%2 end)
 function Underscore.funcs.any(list, func)
 	func = func or Underscore.identity
 
@@ -145,6 +163,10 @@ function Underscore.funcs.any(list, func)
 	return false
 end
 
+--- Returns true if the list include's value
+-- @name _.include
+-- @param list
+-- @param value
 function Underscore.funcs.include(list, value)
 	for i in Underscore.iter(list) do
 		if i == value then return true end
@@ -152,15 +174,44 @@ function Underscore.funcs.include(list, value)
 	return false
 end
 
+--- Calls a function with specified name on each item using the colon operator.
+-- @name invoke
+-- @param list
+-- @param function_name
+-- @param ... (optional) arguments to be passed into the function
+-- @return the original list
+-- @usage Person = {}; Person.__index = Person
+--		function Person:new(name)
+--			return setmetatable({ name=name }, self)
+--		end
+--		function Person:print()
+--			print(self.name)
+--		end
+--		_.invoke({ Person:new("Tom"), Person:new("Dick"), Person:new("Harry") }, "print")
+-- => Calls person:print() on each Person
 function Underscore.funcs.invoke(list, functionName, ...)
 	local args = {...}
 	Underscore.funcs.each(list, function(i) i[functionName](i, unpack(args)) end)
 end
 
+--- An convenient version of the common use-case of map: extracting a list of properties
+-- @name _.pluck
+-- @param list
+-- @param property_name
+-- @return new array containing the property value corresponding to the propery name on each item
+-- @usage _.pluck({ {id=1}, {id=2}, {id=3} }, 'id')
+-- => { 1, 2, 3 }
 function Underscore.funcs.pluck(list, propertyName)
 	return Underscore.funcs.map(list, function(i) return i[propertyName] end)
 end
 
+--- Returns the item with the smallest value. If a func i spassed it will be used on each value 
+-- to generate the criterion by which the value is ranked.
+-- @name _.min
+-- @param list
+-- @param func
+-- @return the minimum value
+-- 
 function Underscore.funcs.min(list, func)
 	func = func or Underscore.identity
 	local min, min_value = nil, nil
