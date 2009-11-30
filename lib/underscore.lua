@@ -128,12 +128,17 @@ end
 
 function Underscore.funcs.min(list, func)
 	func = func or Underscore.identity
-	local min = nil
+	local min, min_value = nil, nil
 	for i in Underscore.iter(list) do
-		if min then
-			min = math.min(min, func(i))
+		if min == nil then
+			min = i
+			min_value = func(i)
 		else
-			min = func(i)
+			local value = func(i)
+			if value < min_value then
+				min = i
+				min_value = func(i)
+			end
 		end
 	end
 	return min
@@ -142,12 +147,17 @@ end
 function Underscore.funcs.max(list, func)
 	func = func or Underscore.identity
 	
-	local max = nil
+	local max, max_value = nil, nil
 	for i in Underscore.iter(list) do
-		if max then
-			max = math.max(max, func(i))
+		if max == nil then
+			max = i
+			max_value = func(i)
 		else
-			max = func(i)
+			local value = func(i)
+			if value > max_value then
+				max = i
+				max_value = func(i)
+			end
 		end
 	end
 	return max

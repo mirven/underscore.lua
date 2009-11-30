@@ -124,6 +124,13 @@ print(unpack(_.pluck(people, "name")))
 
 print(unpack(_(sq(5)):to_array()))
 
+sue = { name = "Sue", age = 25 }
+fred = { name = "Fred", age = 10 }
+jane = { name = "Jane", age = 30 }
+
+assert(_.min({sue,fred,jane}, function(p) return p.age end) == fred)
+assert(_.max({sue,fred,jane}, function(p) return p.age end) == jane)
+
 assert(_({}):min() == nil)
 assert(_({1}):min() == 1)
 assert(_({1,2,3}):min() == 1)
