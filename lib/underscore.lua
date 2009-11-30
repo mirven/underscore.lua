@@ -393,13 +393,26 @@ function Underscore.funcs.flatten(array)
 end
 
 --- Inserts and item on the back of of an array
--- @name
+-- @name _.push
 -- @return the array
 -- @usage _.push({1,2,3}, 4)
 -- => { 1,2,3,4 }
 function Underscore.funcs.push(array, item)
 	array[#array+1] = item
 	return array
+end
+
+--- Returns a string with all items in the array concatenated together with an optional separator
+-- @name _.join
+-- @param array
+-- @param separator (Optional)
+-- @return 
+-- @usage _.join({'c','a','t'})
+-- => "cat"
+-- _.join({'c','a','t'}, '/')
+-- => "c/a/t"
+function Underscore.funcs.join(array, separator)
+	return table.concat(array, separator)
 end
 
 -- objects

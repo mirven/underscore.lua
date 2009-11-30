@@ -177,3 +177,6 @@ print(unpack(_.keys { name = "John", age = 25 }))
 print(unpack(_.values { name = "John", age = 25 }))
 
 print(unpack(_.push({1,2,3}, 4)))
+
+assert(_.join({'c','a','t'}) == "cat")
+assert(_.join({'c','a','t'}, '/') == "c/a/t")
