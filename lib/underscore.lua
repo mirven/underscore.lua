@@ -443,6 +443,16 @@ function Underscore.funcs.is_empty(obj)
 end
 
 -- functions
+
+--- Returns the composition of a list of functions, where each function consumes the 
+-- return value of the function that follows. In math terms, composing the functions 
+-- f(), g(), and h() produces f(g(h())). 
+-- @name _.compose
+-- @usage greet = function(name) return "hi: "..name end
+-- exclaim = function(statement) return statement.."!" end
+-- welcome = _.compose(print, greet, exclaim)
+-- welcome('moe')
+-- => hi: moe!
 function Underscore.funcs.compose(...)
 	local function call_funcs(funcs, ...)
 		if #funcs > 1 then
@@ -453,20 +463,32 @@ function Underscore.funcs.compose(...)
 	end
 	
 	local funcs = {...}
-	
 	return function(...)
 		return call_funcs(funcs, ...)
 	end
 end
 
+--- Wraps the first function inside of the wrapper function, 
+-- passing it as the first argument. This allows the wrapper to 
+-- execute code before and after the function runs, adjust the 
+-- arguments, and execute it conditionally.
+-- @name _.wrap
+-- @usage local hello = function(name) return "hello: "..name end
+-- hello = _.wrap(hello, function(func, ...)
+--   return "before, "..func(...)..", after"
+-- end)
+-- hello('moe')
+-- => before, hello: moe, after
 function Underscore.funcs.wrap(func, wrapper)
 	return function(...)
 		return wrapper(func, ...)
 	end
 end
 
---
-
+--- Returns an array of all function names in this library
+-- @name _.functions
+-- @usage _.functions()
+-- => { 'each', 'map', 'reduce', ... }
 function Underscore.functions() 
 	return Underscore.keys(Underscore.funcs)
 end
