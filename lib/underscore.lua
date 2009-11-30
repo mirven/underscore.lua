@@ -23,16 +23,18 @@ function Underscore.iter(list_or_iter)
 	end)
 end
 
---- Identity function
+--- Identity function. This function looks useless, but is used throughout Underscore as a default.
 -- @name _.identity
 -- @param value any object
 -- @return value
+-- @usage _.identity("foo")
+-- => "foo"
 function Underscore.identity(value)
 	return value
 end
 
 --- Restores the _ variable and returns the _ object so that 
--- it can be assigned to another variable
+-- it can be assigned to another variable.
 -- @name _:no_conflict
 function Underscore:no_conflict()
   _ = previous_underscore
@@ -41,14 +43,14 @@ end
 
 -- chaining
 
---- Starts chaining
+--- Starts chaining.
 -- @name _:chain
 function Underscore:chain()
 	self.chained = true
 	return self
 end
 
---- Returns the value of a chained object
+--- Returns the value of a chained object.
 -- @name _:value
 function Underscore:value()
 	return self._val
@@ -56,15 +58,17 @@ end
 
 -- iter
 
---- Calls func on each item in list
+--- Calls func on each item in list.
 -- @name _.each
 -- @param list
 -- @param func
+-- @return list
 -- @usage _.each({1,2,3}, print)
 function Underscore.funcs.each(list, func)
 	for i in Underscore.iter(list) do
 		func(i)
 	end
+	return list
 end
 
 --- Produces a new array by mapping each value in iter
@@ -81,7 +85,7 @@ function Underscore.funcs.map(list, func)
 	return mapped
 end
 
---- Reduces a list of items down to a singular value
+--- Reduces a list of items down to a singular value.
 -- @name _.reduce
 -- @param list items to perform the reduction on
 -- @param memo initial state of reduction and each sucessive state should be returned by func
@@ -163,7 +167,7 @@ function Underscore.funcs.any(list, func)
 	return false
 end
 
---- Returns true if the list include's value
+--- Returns true if the list include's value.
 -- @name _.include
 -- @param list
 -- @param value
@@ -192,9 +196,10 @@ end
 function Underscore.funcs.invoke(list, function_name, ...)
 	local args = {...}
 	Underscore.funcs.each(list, function(i) i[function_name](i, unpack(args)) end)
+	return list
 end
 
---- An convenient version of the common use-case of map: extracting a list of properties
+--- An convenient version of the common use-case of map: extracting a list of properties.
 -- @name _.pluck
 -- @param list
 -- @param property_name
@@ -277,7 +282,7 @@ function Underscore.funcs.to_array(list)
 end
 
 --- Iterates over all the items and returns a new array with the items
--- in reverse order
+-- in reverse order.
 -- @name _.reverse
 -- @param list
 -- @return a new array
@@ -348,7 +353,7 @@ function Underscore.funcs.rest(array, index)
 	return rest
 end
 
---- Returns a section of an array starting with start_index of length items length
+--- Returns a section of an array starting with start_index of length items length.
 -- @name _.slice
 -- @param array
 -- @param start_index
@@ -389,7 +394,7 @@ end
 
 -- objects
 
---- Returns an array of all the property names in a table
+--- Returns an array of all the property names in a table.
 -- @name _.keys
 -- @param obj
 -- @return an array with the property names (Note: the order is not defined)
@@ -403,7 +408,7 @@ function Underscore.funcs.keys(obj)
 	return keys
 end
 
---- Returns an array of all the property values in a table
+--- Returns an array of all the property values in a table.
 -- @name _.values
 -- @param obj
 -- @return an array with the property values (Note: the order is not defined)
@@ -484,7 +489,7 @@ function Underscore.funcs.wrap(func, wrapper)
 	end
 end
 
---- Returns an array of all function names in this library
+--- Returns an array of all function names in this library.
 -- @name _.functions
 -- @usage _.functions()
 -- => { 'each', 'map', 'reduce', ... }
