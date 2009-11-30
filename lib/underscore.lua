@@ -118,11 +118,7 @@ function Underscore.funcs.invoke(list, functionName, ...)
 end
 
 function Underscore.funcs.pluck(list, propertyName)
-	local properties = {}
-	for i in Underscore.iter(list) do
-		properties[#properties+1] = i[propertyName]
-	end	
-	return properties
+	return Underscore.funcs.map(list, function(i) return i[propertyName] end)
 end
 
 function Underscore.funcs.min(list, func)
