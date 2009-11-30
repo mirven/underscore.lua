@@ -175,7 +175,7 @@ function Underscore.funcs.include(list, value)
 end
 
 --- Calls a function with specified name on each item using the colon operator.
--- @name invoke
+-- @name _.invoke
 -- @param list
 -- @param function_name
 -- @param ... (optional) arguments to be passed into the function
