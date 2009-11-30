@@ -292,6 +292,14 @@ function Underscore.funcs.reverse(list)
 	return reversed
 end
 
+--- Sorts all items using a comparison function if provided. Uses table.sort but
+-- creates a new array first.
+-- @name _.sort
+-- @param list
+-- @param comparison_func (Optional)
+-- @return a new array
+-- @usage _.sort({ 10, 2, 5})
+-- => { 2, 5, 10 }
 function Underscore.funcs.sort(iter, comparison_func)
 	local array = Underscore.funcs.to_array(iter)
 	table.sort(array, comparison_func)
