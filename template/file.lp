@@ -3,7 +3,7 @@
 <html>
 <head>
   <title>Underscore.lua</title>
-  <link rel="stylesheet" href="<%=luadoc.doclet.html.link('luadoc.css', 'files/'..file_doc.name)%>" type="text/css" />
+  <link rel="stylesheet" href="main.css" type="text/css" />
   <!--meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/-->
 </head>
 

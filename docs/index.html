@@ -1,0 +1,1233 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+  <title>Underscore.lua</title>
+  <link rel="stylesheet" href="main.css" type="text/css" />
+  <!--meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/-->
+</head>
+
+<body>
+  <div id="container">
+    <!-- <div id="main"> -->
+      <!-- <div id="content"> -->
+        <h1>Underscore.lua</h1>
+
+        
+        <p>
+          Underscore.lua is a Lua library that provides a set of utility functions for dealing with
+          iterators, arrays, tables, and functions. It is <b>heavily</b> inspired by 
+          <a href="http://documentcloud.github.com/underscore">Underscore.js</a>. Although the code was
+          not referenced during the writing of this library the documentation, examples, and api are basically
+          ripped off from them.
+        </p>
+        
+        <h2>Installing</h2>
+        <p>The source code is available at <a href="http://github.com/mirven/underscore.lua">available at Github</a>.
+        <p>It can be installed with <a href="http://www.luarocks.org">LuaRocks</a> via <code>luarocks install underscore.lua --from=https://marcusirven.s3.amazonaws.com/rocks</code></p>
+        
+        <h2>Object-Oriented and Functional Styles</h2>
+        <p>
+          You can use Underscore in either an object-oriented or a functional style, 
+          depending on your preference. The following two lines of code are identical 
+          ways to double a list of numbers.
+        </p>
+        <pre>
+          _.map({1, 2, 3}, function(n) return n * 2 end)
+          _({1, 2, 3}):map(function(n) return n * 2 end)
+        </pre>
+        <p>
+          Using the object-oriented style allows you to chain together methods. Calling chain on a 
+          wrapped object will cause all future method calls to return wrapped objects as well. When 
+          you've finished the computation, use value to retrieve the final value. Here's an example 
+          of chaining together a map/flatten/reduce, in order to get the word count of every word in a song.
+        </p>
+        <pre>
+          local lyrics = {
+            { line = 1, words = "I'm a lumberjack and I'm okay" },
+            { line = 2, words = "I sleep all night and I work all day" },
+            { line = 3, words = "He's a lumberjack and he's okay" },
+            { line = 4, words = "He sleeps all night and he works all day" }
+          }
+          
+          _(lyrics):chain()
+            :map(function(line) 
+              local words = {}
+              for w in line.words:gmatch("%S+") do
+                words[#words+1] = w   
+              end
+              return words
+            end)
+            :flatten()
+            :reduce({}, function(counts, word)
+              counts[word] = (counts[word] or 0) + 1
+              return counts
+            end):value()
+        </pre>
+        <p>Note: This can be written even more succinctly as (notice the map function):</p> 
+        <pre>
+          _(lyrics):chain()
+            :map(function(line) return _.to_array(line.words:gmatch("%S+")) end)
+            :flatten()
+            :reduce({}, function(counts, word)
+              counts[word] = (counts[word] or 0) + 1
+              return counts
+            end):value()
+        </pre>
+          
+        
+        <h2>Functions</h2>
+        <table class="function_list">
+          
+            <tr>
+              <td class="name" nowrap><a href="#_.all">_.all</a>&nbsp;(list, func)</td>
+              <td class="summary">Returns true if func(item) returns true for all item in items.</td>
+            </tr>
+            
+            <tr>
+              <td class="name" nowrap><a href="#_.any">_.any</a>&nbsp;(list, func)</td>
+              <td class="summary">Returns true if func(item) returns true for all item in items.</td>
+            </tr>
+            
+            <tr>
+              <td class="name" nowrap><a href="#_.compose">_.compose</a>&nbsp;(...)</td>
+              <td class="summary">Returns the composition of a list of functions, where each function consumes the return value of the function that follows.</td>
+            </tr>
+            
+            <tr>
+              <td class="name" nowrap><a href="#_.detect">_.detect</a>&nbsp;(list, func)</td>
+              <td class="summary">Looks through a list returning the first element that matches a truth function.</td>
+            </tr>
+            
+            <tr>
+              <td class="name" nowrap><a href="#_.each">_.each</a>&nbsp;(list, func)</td>
+              <td class="summary">Calls func on each item in list </td>
+            </tr>
+            
+            <tr>
+              <td class="name" nowrap><a href="#_.first">_.first</a>&nbsp;(array, n)</td>
+              <td class="summary">Returns the first element of an array.</td>
+            </tr>
+            
+            <tr>
+              <td class="name" nowrap><a href="#_.flatten">_.flatten</a>&nbsp;(array)</td>
+              <td class="summary">Flattens a nested array (the nesting can be to any depth).</td>
+            </tr>
+            
+            <tr>
+              <td class="name" nowrap><a href="#_.functions">_.functions</a>&nbsp;()</td>
+              <td class="summary">Returns an array of all function names in this library </td>
+            </tr>
+            
+            <tr>
+              <td class="name" nowrap><a href="#_.identity">_.identity</a>&nbsp;(value)</td>
+              <td class="summary">Identity function </td>
+            </tr>
+            
+            <tr>
+              <td class="name" nowrap><a href="#_.include">_.include</a>&nbsp;(list, value)</td>
+              <td class="summary">Returns true if the list include's value </td>
+            </tr>
+            
+            <tr>
+              <td class="name" nowrap><a href="#_.invoke">_.invoke</a>&nbsp;(list, function_name, ...)</td>
+              <td class="summary">Calls a function with specified name on each item using the colon operator.</td>
+            </tr>
+            
+            <tr>
+              <td class="name" nowrap><a href="#_.is_empty">_.is_empty</a>&nbsp;(obj)</td>
+              <td class="summary">Returns true if object contains no values.</td>
+            </tr>
+            
+            <tr>
+              <td class="name" nowrap><a href="#_.keys">_.keys</a>&nbsp;(obj)</td>
+              <td class="summary">Returns an array of all the property names in a table </td>
+            </tr>
+            
+            <tr>
+              <td class="name" nowrap><a href="#_.map">_.map</a>&nbsp;(list, func)</td>
+              <td class="summary">Produces a new array by mapping each value in iter through a transformation function.</td>
+            </tr>
+            
+            <tr>
+              <td class="name" nowrap><a href="#_.max">_.max</a>&nbsp;(list, func)</td>
+              <td class="summary">Returns the item with the largest value.</td>
+            </tr>
+            
+            <tr>
+              <td class="name" nowrap><a href="#_.min">_.min</a>&nbsp;(list, func)</td>
+              <td class="summary">Returns the item with the smallest value.</td>
+            </tr>
+            
+            <tr>
+              <td class="name" nowrap><a href="#_.pluck">_.pluck</a>&nbsp;(list, propertyName)</td>
+              <td class="summary">An convenient version of the common use-case of map: extracting a list of properties </td>
+            </tr>
+            
+            <tr>
+              <td class="name" nowrap><a href="#_.reduce">_.reduce</a>&nbsp;(list, memo, func)</td>
+              <td class="summary">Reduces a list of items down to a singular value </td>
+            </tr>
+            
+            <tr>
+              <td class="name" nowrap><a href="#_.reject">_.reject</a>&nbsp;(list, func)</td>
+              <td class="summary">Looks through alist and returns a new array containing all items that don't match the truth function.</td>
+            </tr>
+            
+            <tr>
+              <td class="name" nowrap><a href="#_.rest">_.rest</a>&nbsp;(array, index)</td>
+              <td class="summary">Returns an array of all items except the first.</td>
+            </tr>
+            
+            <tr>
+              <td class="name" nowrap><a href="#_.reverse">_.reverse</a>&nbsp;(list)</td>
+              <td class="summary">Iterates over all the items and returns a new array with the items in reverse order </td>
+            </tr>
+            
+            <tr>
+              <td class="name" nowrap><a href="#_.select">_.select</a>&nbsp;(list, func)</td>
+              <td class="summary">Looks through a list and returns a new array containing all items that match a truth function.</td>
+            </tr>
+            
+            <tr>
+              <td class="name" nowrap><a href="#_.slice">_.slice</a>&nbsp;(array, start_index, length)</td>
+              <td class="summary">Returns a section of an array starting with start_index of length items length </td>
+            </tr>
+            
+            <tr>
+              <td class="name" nowrap><a href="#_.sort">_.sort</a>&nbsp;(iter, comparison_func)</td>
+              <td class="summary">Sorts all items using a comparison function if provided.</td>
+            </tr>
+            
+            <tr>
+              <td class="name" nowrap><a href="#_.to_array">_.to_array</a>&nbsp;(list)</td>
+              <td class="summary">Converts the list to an array.</td>
+            </tr>
+            
+            <tr>
+              <td class="name" nowrap><a href="#_.values">_.values</a>&nbsp;(destination, source)</td>
+              <td class="summary">Copy all of the properties in the source object over to the destination object.</td>
+            </tr>
+            
+            <tr>
+              <td class="name" nowrap><a href="#_.values">_.values</a>&nbsp;(destination, source)</td>
+              <td class="summary">Copy all of the properties in the source object over to the destination object.</td>
+            </tr>
+            
+            <tr>
+              <td class="name" nowrap><a href="#_.wrap">_.wrap</a>&nbsp;(func, wrapper)</td>
+              <td class="summary">Wraps the first function inside of the wrapper function, passing it as the first argument.</td>
+            </tr>
+            
+            <tr>
+              <td class="name" nowrap><a href="#_:chain">_:chain</a>&nbsp;()</td>
+              <td class="summary">Starts chaining </td>
+            </tr>
+            
+            <tr>
+              <td class="name" nowrap><a href="#_:no_conflict">_:no_conflict</a>&nbsp;()</td>
+              <td class="summary">Restores the _ variable and returns the _ object so that it can be assigned to another variable </td>
+            </tr>
+            
+            <tr>
+              <td class="name" nowrap><a href="#_:value">_:value</a>&nbsp;()</td>
+              <td class="summary">Returns the value of a chained object </td>
+            </tr>
+            
+          </table>
+          
+
+          
+
+          
+          <h2><a name="functions"></a>Functions</h2>
+          <dl class="function">
+            
+            
+
+<dt><a name="_.all"></a><strong>_.all</strong>&nbsp;(list, func)</dt>
+<dd>
+Returns true if func(item) returns true for all item in items.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  list: items
+	</li>
+	
+	<li>
+	  func: (optional)
+	</li>
+	
+</ul>
+
+
+
+
+<h3>Usage:</h3>
+_.all({2,4,8}, function(i) return i%2 end)
+
+
+
+
+
+</dd>
+
+            
+            
+
+<dt><a name="_.any"></a><strong>_.any</strong>&nbsp;(list, func)</dt>
+<dd>
+Returns true if func(item) returns true for all item in items.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  list: items
+	</li>
+	
+	<li>
+	  func: (optional)
+	</li>
+	
+</ul>
+
+
+
+
+<h3>Usage:</h3>
+_.any({2,4,8}, function(i) return i%2 end)
+
+
+
+
+
+</dd>
+
+            
+            
+
+<dt><a name="_.compose"></a><strong>_.compose</strong>&nbsp;(...)</dt>
+<dd>
+Returns the composition of a list of functions, where each function consumes the return value of the function that follows. In math terms, composing the functions f(), g(), and h() produces f(g(h())).
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  ...: 
+	</li>
+	
+</ul>
+
+
+
+
+<h3>Usage:</h3>
+greet = function(name) return "hi: "..name end exclaim = function(statement) return statement.."!" end welcome = _.compose(print, greet, exclaim) welcome('moe') => hi: moe!
+
+
+
+
+
+</dd>
+
+            
+            
+
+<dt><a name="_.detect"></a><strong>_.detect</strong>&nbsp;(list, func)</dt>
+<dd>
+Looks through a list returning the first element that matches a truth function. The function returns as soon as it finds an acceptable element and doesn't traverse the entire list.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  list: 
+	</li>
+	
+	<li>
+	  func: 
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+            
+            
+
+<dt><a name="_.each"></a><strong>_.each</strong>&nbsp;(list, func)</dt>
+<dd>
+Calls func on each item in list
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  list: 
+	</li>
+	
+	<li>
+	  func: 
+	</li>
+	
+</ul>
+
+
+
+
+<h3>Usage:</h3>
+_.each({1,2,3}, print)
+
+
+
+
+
+</dd>
+
+            
+            
+
+<dt><a name="_.first"></a><strong>_.first</strong>&nbsp;(array, n)</dt>
+<dd>
+Returns the first element of an array. Optionally it will return an array of the first n items.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  array: 
+	</li>
+	
+	<li>
+	  n: (Optional)
+	</li>
+	
+</ul>
+
+
+
+
+<h3>Usage:</h3>
+_.first({ 10, 2, 5}) => 10 _.first({ 10, 2, 5}, 2) => { 10, 2 }
+
+
+
+<h3>Return value:</h3>
+the first item or an array of the first n items of n is specified
+
+
+
+</dd>
+
+            
+            
+
+<dt><a name="_.flatten"></a><strong>_.flatten</strong>&nbsp;(array)</dt>
+<dd>
+Flattens a nested array (the nesting can be to any depth).
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  array: 
+	</li>
+	
+</ul>
+
+
+
+
+<h3>Usage:</h3>
+_.flatten({1, {2}, {3, {{{4}}}}}) => { 1, 2, 3, 4 }
+
+
+
+<h3>Return value:</h3>
+the flattened array
+
+
+
+</dd>
+
+            
+            
+
+<dt><a name="_.functions"></a><strong>_.functions</strong>&nbsp;()</dt>
+<dd>
+Returns an array of all function names in this library
+
+
+
+
+
+<h3>Usage:</h3>
+_.functions() => { 'each', 'map', 'reduce', ... }
+
+
+
+
+
+</dd>
+
+            
+            
+
+<dt><a name="_.identity"></a><strong>_.identity</strong>&nbsp;(value)</dt>
+<dd>
+Identity function
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  value: any object
+	</li>
+	
+</ul>
+
+
+
+
+
+
+<h3>Return value:</h3>
+value
+
+
+
+</dd>
+
+            
+            
+
+<dt><a name="_.include"></a><strong>_.include</strong>&nbsp;(list, value)</dt>
+<dd>
+Returns true if the list include's value
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  list: 
+	</li>
+	
+	<li>
+	  value: 
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+            
+            
+
+<dt><a name="_.invoke"></a><strong>_.invoke</strong>&nbsp;(list, function_name, ...)</dt>
+<dd>
+Calls a function with specified name on each item using the colon operator.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  list: 
+	</li>
+	
+	<li>
+	  function_name: 
+	</li>
+	
+	<li>
+	  ...: (optional) arguments to be passed into the function
+	</li>
+	
+</ul>
+
+
+
+
+<h3>Usage:</h3>
+Person = {}; Person.__index = Person function Person:new(name) return setmetatable({ name=name }, self) end function Person:print() print(self.name) end _.invoke({ Person:new("Tom"), Person:new("Dick"), Person:new("Harry") }, "print") => Calls person:print() on each Person
+
+
+
+<h3>Return value:</h3>
+the original list
+
+
+
+</dd>
+
+            
+            
+
+<dt><a name="_.is_empty"></a><strong>_.is_empty</strong>&nbsp;(obj)</dt>
+<dd>
+Returns true if object contains no values.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  obj: 
+	</li>
+	
+</ul>
+
+
+
+
+<h3>Usage:</h3>
+_.is_empty({}) => true -.is_empty({ name = "moe" }) => false
+
+
+
+
+
+</dd>
+
+            
+            
+
+<dt><a name="_.keys"></a><strong>_.keys</strong>&nbsp;(obj)</dt>
+<dd>
+Returns an array of all the property names in a table
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  obj: 
+	</li>
+	
+</ul>
+
+
+
+
+<h3>Usage:</h3>
+_.keys { name = "John", age = 25 } => { "name", "age" }
+
+
+
+<h3>Return value:</h3>
+an array with the property names (Note: the order is not defined)
+
+
+
+</dd>
+
+            
+            
+
+<dt><a name="_.map"></a><strong>_.map</strong>&nbsp;(list, func)</dt>
+<dd>
+Produces a new array by mapping each value in iter through a transformation function.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  list: 
+	</li>
+	
+	<li>
+	  func: 
+	</li>
+	
+</ul>
+
+
+
+
+<h3>Usage:</h3>
+_.map({1,2,3}, function(i) return i*2 end)
+
+
+
+
+
+</dd>
+
+            
+            
+
+<dt><a name="_.max"></a><strong>_.max</strong>&nbsp;(list, func)</dt>
+<dd>
+Returns the item with the largest value. If a func i spassed it will be used on each value to generate the criterion by which the value is ranked.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  list: 
+	</li>
+	
+	<li>
+	  func: 
+	</li>
+	
+</ul>
+
+
+
+
+<h3>Usage:</h3>
+_.max({ 5, 2, 15}) => 15 _.max({ {age=5}, {age=2}, {age=15} }, function(p) return p.age end) => {age=15}
+
+
+
+<h3>Return value:</h3>
+the maximum value
+
+
+
+</dd>
+
+            
+            
+
+<dt><a name="_.min"></a><strong>_.min</strong>&nbsp;(list, func)</dt>
+<dd>
+Returns the item with the smallest value. If a func i spassed it will be used on each value to generate the criterion by which the value is ranked.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  list: 
+	</li>
+	
+	<li>
+	  func: 
+	</li>
+	
+</ul>
+
+
+
+
+<h3>Usage:</h3>
+_.min({ 5, 2, 15}) => 2 _.min({ {age=5}, {age=2}, {age=15} }, function(p) return p.age end) => {age=2}
+
+
+
+<h3>Return value:</h3>
+the minimum value
+
+
+
+</dd>
+
+            
+            
+
+<dt><a name="_.pluck"></a><strong>_.pluck</strong>&nbsp;(list, propertyName)</dt>
+<dd>
+An convenient version of the common use-case of map: extracting a list of properties
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  list: 
+	</li>
+	
+	<li>
+	  propertyName: 
+	</li>
+	
+</ul>
+
+
+
+
+<h3>Usage:</h3>
+_.pluck({ {id=1}, {id=2}, {id=3} }, 'id') => { 1, 2, 3 }
+
+
+
+<h3>Return value:</h3>
+new array containing the property value corresponding to the propery name on each item
+
+
+
+</dd>
+
+            
+            
+
+<dt><a name="_.reduce"></a><strong>_.reduce</strong>&nbsp;(list, memo, func)</dt>
+<dd>
+Reduces a list of items down to a singular value
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  list: items to perform the reduction on
+	</li>
+	
+	<li>
+	  memo: initial state of reduction and each sucessive state should be returned by func
+	</li>
+	
+	<li>
+	  func: reduction function which takes two parameters, the current state and value
+	</li>
+	
+</ul>
+
+
+
+
+<h3>Usage:</h3>
+_.reduce({1,2,3}, 0, function(memo, i) return memo+i end)
+
+
+
+
+
+</dd>
+
+            
+            
+
+<dt><a name="_.reject"></a><strong>_.reject</strong>&nbsp;(list, func)</dt>
+<dd>
+Looks through alist and returns a new array containing all items that don't match the truth function.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  list: 
+	</li>
+	
+	<li>
+	  func: 
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+            
+            
+
+<dt><a name="_.rest"></a><strong>_.rest</strong>&nbsp;(array, index)</dt>
+<dd>
+Returns an array of all items except the first. Optionally it will start at index.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  array: 
+	</li>
+	
+	<li>
+	  index: (Optional)
+	</li>
+	
+</ul>
+
+
+
+
+<h3>Usage:</h3>
+_.rest({ 1, 2, 3 }) => { 2,3 } _.rest({ 1, 2, 3 }, 2) => { 3 }
+
+
+
+<h3>Return value:</h3>
+an array with the remaining items
+
+
+
+</dd>
+
+            
+            
+
+<dt><a name="_.reverse"></a><strong>_.reverse</strong>&nbsp;(list)</dt>
+<dd>
+Iterates over all the items and returns a new array with the items in reverse order
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  list: 
+	</li>
+	
+</ul>
+
+
+
+
+<h3>Usage:</h3>
+_.reverse({ 1, 2, 3}) => { 3, 2, 1 }
+
+
+
+<h3>Return value:</h3>
+a new array
+
+
+
+</dd>
+
+            
+            
+
+<dt><a name="_.select"></a><strong>_.select</strong>&nbsp;(list, func)</dt>
+<dd>
+Looks through a list and returns a new array containing all items that match a truth function.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  list: 
+	</li>
+	
+	<li>
+	  func: 
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+            
+            
+
+<dt><a name="_.slice"></a><strong>_.slice</strong>&nbsp;(array, start_index, length)</dt>
+<dd>
+Returns a section of an array starting with start_index of length items length
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  array: 
+	</li>
+	
+	<li>
+	  start_index: 
+	</li>
+	
+	<li>
+	  length: 
+	</li>
+	
+</ul>
+
+
+
+
+<h3>Usage:</h3>
+_.slice({ 1, 2, 3, 4, 5 }, 2, 3) => { 2, 3, 4 }
+
+
+
+<h3>Return value:</h3>
+an array
+
+
+
+</dd>
+
+            
+            
+
+<dt><a name="_.sort"></a><strong>_.sort</strong>&nbsp;(iter, comparison_func)</dt>
+<dd>
+Sorts all items using a comparison function if provided. Uses table.sort but creates a new array first.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  iter: 
+	</li>
+	
+	<li>
+	  comparison_func: (Optional)
+	</li>
+	
+</ul>
+
+
+
+
+<h3>Usage:</h3>
+_.sort({ 10, 2, 5}) => { 2, 5, 10 }
+
+
+
+<h3>Return value:</h3>
+a new array
+
+
+
+</dd>
+
+            
+            
+
+<dt><a name="_.to_array"></a><strong>_.to_array</strong>&nbsp;(list)</dt>
+<dd>
+Converts the list to an array. This is useful for creating an array from a generator.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  list: 
+	</li>
+	
+</ul>
+
+
+
+
+<h3>Usage:</h3>
+_.to_array(string.gmatch("dog cat goat", "%S+")) => { "dog", "cat", "goat" }
+
+
+
+<h3>Return value:</h3>
+a new array
+
+
+
+</dd>
+
+            
+            
+
+<dt><a name="_.values"></a><strong>_.values</strong>&nbsp;(destination, source)</dt>
+<dd>
+Copy all of the properties in the source object over to the destination object.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  destination: 
+	</li>
+	
+	<li>
+	  source: 
+	</li>
+	
+</ul>
+
+
+
+
+<h3>Usage:</h3>
+_.extend({ name = 'moe' }, { age = 50 }) => { name = 'moe', age = 50 }
+
+
+
+<h3>Return value:</h3>
+the destination object
+
+
+
+</dd>
+
+            
+            
+
+<dt><a name="_.values"></a><strong>_.values</strong>&nbsp;(destination, source)</dt>
+<dd>
+Copy all of the properties in the source object over to the destination object.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  destination: 
+	</li>
+	
+	<li>
+	  source: 
+	</li>
+	
+</ul>
+
+
+
+
+<h3>Usage:</h3>
+_.extend({ name = 'moe' }, { age = 50 }) => { name = 'moe', age = 50 }
+
+
+
+<h3>Return value:</h3>
+the destination object
+
+
+
+</dd>
+
+            
+            
+
+<dt><a name="_.wrap"></a><strong>_.wrap</strong>&nbsp;(func, wrapper)</dt>
+<dd>
+Wraps the first function inside of the wrapper function, passing it as the first argument. This allows the wrapper to execute code before and after the function runs, adjust the arguments, and execute it conditionally.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  func: 
+	</li>
+	
+	<li>
+	  wrapper: 
+	</li>
+	
+</ul>
+
+
+
+
+<h3>Usage:</h3>
+local hello = function(name) return "hello: "..name end hello = _.wrap(hello, function(func, ...) return "before, "..func(...)..", after" end) hello('moe') => before, hello: moe, after
+
+
+
+
+
+</dd>
+
+            
+            
+
+<dt><a name="_:chain"></a><strong>_:chain</strong>&nbsp;()</dt>
+<dd>
+Starts chaining
+
+
+
+
+
+
+
+
+
+</dd>
+
+            
+            
+
+<dt><a name="_:no_conflict"></a><strong>_:no_conflict</strong>&nbsp;()</dt>
+<dd>
+Restores the _ variable and returns the _ object so that it can be assigned to another variable
+
+
+
+
+
+
+
+
+
+</dd>
+
+            
+            
+
+<dt><a name="_:value"></a><strong>_:value</strong>&nbsp;()</dt>
+<dd>
+Returns the value of a chained object
+
+
+
+
+
+
+
+
+
+</dd>
+
+            
+          </dl>
+          
+
+          
+
+        <!-- </div> --> <!-- id="content" -->
+
+      <!-- </div> --> <!-- id="main" -->
+
+    </div> <!-- id="container" -->	
+  </body>
+</html>
