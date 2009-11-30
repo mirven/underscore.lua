@@ -175,3 +175,5 @@ print(unpack(_.to_array(string.gmatch("dog cat goat", "%S+"))))
 
 print(unpack(_.keys { name = "John", age = 25 }))
 print(unpack(_.values { name = "John", age = 25 }))
+
+print(unpack(_.push({1,2,3}, 4)))

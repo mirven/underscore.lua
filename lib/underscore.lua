@@ -392,6 +392,16 @@ function Underscore.funcs.flatten(array)
 	return all
 end
 
+--- Inserts and item on the back of of an array
+-- @name
+-- @return the array
+-- @usage _.push({1,2,3}, 4)
+-- => { 1,2,3,4 }
+function Underscore.funcs.push(array, item)
+	array[#array+1] = item
+	return array
+end
+
 -- objects
 
 --- Returns an array of all the property names in a table.
