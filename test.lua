@@ -151,9 +151,8 @@ print(unpack(_({'foo', 'bar', 'bah'}):rest()))
 print(unpack(_({'foo', 'bar', 'bah'}):rest(3)))
 print(unpack(_({'foo', 'bar', 'bah'}):rest(13)))
 
-print(unpack(_.compact({ 5, nil, 10, 'a', false, true }))) -- ipairs at the nil!
-
-print(unpack(_.compact({ 5, 10, 'a', false, true })))
+-- print(unpack(_.compact({ 5, nil, 10, 'a', false, true }))) -- ipairs at the nil!
+-- print(unpack(_.compact({ 5, 10, 'a', false, true })))
 
 local greet = function(name) return "hi: "..name end
 local exclaim = function(statement) return statement.."!" end
@@ -173,3 +172,6 @@ print(unpack(_.reverse { 'a', 'b', 'c' }))
 print(unpack(_.sort { 'c', 'a', 'b' }))
 print(unpack(_.slice({ 1, 2, 3, 4, 5}, 2, 3)))
 print(unpack(_.to_array(string.gmatch("dog cat goat", "%S+"))))
+
+print(unpack(_.keys { name = "John", age = 25 }))
+print(unpack(_.values { name = "John", age = 25 }))

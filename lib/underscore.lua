@@ -189,9 +189,9 @@ end
 --		end
 --		_.invoke({ Person:new("Tom"), Person:new("Dick"), Person:new("Harry") }, "print")
 -- => Calls person:print() on each Person
-function Underscore.funcs.invoke(list, functionName, ...)
+function Underscore.funcs.invoke(list, function_name, ...)
 	local args = {...}
-	Underscore.funcs.each(list, function(i) i[functionName](i, unpack(args)) end)
+	Underscore.funcs.each(list, function(i) i[function_name](i, unpack(args)) end)
 end
 
 --- An convenient version of the common use-case of map: extracting a list of properties
@@ -307,6 +307,17 @@ function Underscore.funcs.sort(iter, comparison_func)
 end
 
 -- arrays
+
+--- Returns the first element of an array. Optionally it will return an array of the 
+-- first n items.
+-- @name _.first
+-- @param array
+-- @param n (Optional)
+-- @return the first item or an array of the first n items of n is specified
+-- @usage _.first({ 10, 2, 5})
+-- => 10
+-- _.first({ 10, 2, 5}, 2)
+-- => { 10, 2 }
 function Underscore.funcs.first(array, n)
 	if n == nil then
 		return array[1]
@@ -320,6 +331,15 @@ function Underscore.funcs.first(array, n)
 	end
 end
 
+--- Returns an array of all items except the first. Optionally it will start at index.
+-- @name _.rest
+-- @param array
+-- @param index (Optional)
+-- @return an array with the remaining items
+-- @usage _.rest({ 1, 2, 3 })
+-- => { 2,3 }
+-- _.rest({ 1, 2, 3 }, 2)
+-- => { 3 }
 function Underscore.funcs.rest(array, index)
 	index = index or 2
 	local rest = {}
@@ -329,6 +349,14 @@ function Underscore.funcs.rest(array, index)
 	return rest
 end
 
+--- Returns a section of an array starting with start_index of length items length
+-- @name _.slice
+-- @param array
+-- @param start_index
+-- @param length
+-- @return an array
+-- @usage _.slice({ 1, 2, 3, 4, 5 }, 2, 3)
+-- => { 2, 3, 4 }
 function Underscore.funcs.slice(array, start_index, length)
 	local sliced_array = {}
 	
@@ -340,10 +368,12 @@ function Underscore.funcs.slice(array, start_index, length)
 	return sliced_array
 end
 
-function Underscore.funcs.compact(array)
-	return Underscore.funcs.select(array, function(i) return i end)
-end
-
+--- Flattens a nested array (the nesting can be to any depth). 
+-- @name _.flatten
+-- @param array
+-- @return the flattened array
+-- @usage _.flatten({1, {2}, {3, {{{4}}}}})
+-- => { 1, 2, 3, 4 }
 function Underscore.funcs.flatten(array)
 	local all = {}
 	
@@ -359,6 +389,13 @@ function Underscore.funcs.flatten(array)
 end
 
 -- objects
+
+--- Returns an array of all the property names in a table
+-- @name _.keys
+-- @param obj
+-- @return an array with the property names (Note: the order is not defined)
+-- @usage _.keys { name = "John", age = 25 }
+-- => { "name", "age" }
 function Underscore.funcs.keys(obj)
 	local keys = {}
 	for k,v in pairs(obj) do
@@ -367,6 +404,12 @@ function Underscore.funcs.keys(obj)
 	return keys
 end
 
+--- Returns an array of all the property values in a table
+-- @name _.values
+-- @param obj
+-- @return an array with the property values (Note: the order is not defined)
+-- @usage _.values { name = "John", age = 25 }
+-- => { "John", 25 }
 function Underscore.funcs.values(obj)
 	local values = {}
 	for k,v in pairs(obj) do
@@ -375,13 +418,26 @@ function Underscore.funcs.values(obj)
 	return values
 end
 
-function Underscore.funcs.extend(obj, source)
+--- Copy all of the properties in the source object over to the destination object. 
+-- @name _.values
+-- @param destination
+-- @param source
+-- @return the destination object
+-- @usage _.extend({ name = 'moe' }, { age = 50 })
+-- => { name = 'moe', age = 50 }
+function Underscore.funcs.extend(destination, source)
 	for k,v in pairs(source) do
-		obj[k] = v
+		destination[k] = v
 	end	
-	return obj
+	return destination
 end
 
+--- Returns true if object contains no values. 
+-- @name _.is_empty
+-- @usage _.is_empty({})
+-- => true
+-- -.is_empty({ name = "moe" })
+-- => false
 function Underscore.funcs.is_empty(obj)
 	return next(obj) == nil
 end
