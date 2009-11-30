@@ -203,6 +203,17 @@ function Underscore.funcs.rest(array, index)
 	return rest
 end
 
+function Underscore.funcs.slice(array, start_index, length)
+	local sliced_array = {}
+	
+	start_index = math.max(start_index, 1)
+	local end_index = math.min(start_index+length-1, #array)
+	for i=start_index, end_index do
+		sliced_array[#sliced_array+1] = array[i]
+	end
+	return sliced_array
+end
+
 function Underscore.funcs.compact(array)
 	return Underscore.funcs.select(array, function(i) return i end)
 end
