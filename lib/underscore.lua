@@ -305,7 +305,10 @@ end
 -- @usage _.sort({ 10, 2, 5})
 -- => { 2, 5, 10 }
 function Underscore.funcs.sort(iter, comparison_func)
-	local array = Underscore.funcs.to_array(iter)
+	local array = iter
+	if type(iter) == "function" then
+		array = Underscore.funcs.to_array(iter)
+	end
 	table.sort(array, comparison_func)
 	return array
 end
