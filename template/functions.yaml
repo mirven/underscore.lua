@@ -121,7 +121,7 @@ reduce_functions:
       description: |
         Returns true if the list include's value. Uses the == operator.
       example: |
-        _.detect({1,2,3,4}, function(i) return i%2 == 0 end)
+        _.include({1,2,3,4}, function(i) return i%2 == 0 end)
         => true
         _.include({1,3,5}, function(i) return i%2 == 0 end)
         => false
@@ -133,9 +133,9 @@ reduce_functions:
       description: |
         Looks through a list returning the first element that matches a truth function. The function returns as soon as it finds an acceptable element.
       example: |
-        _.include({1,2,3,4}, 3)
+        _.detect({1,2,3,4}, func(i) return i > 3 end)
         => true
-        _.include({1,2,3,4}, 7)
+        _.detect({1,2,3,4}, func(i) return i > 7 end)
         => false
 
     - name: 
