@@ -15,7 +15,7 @@ end
 
 namespace :rock do
   version = "0.3-0"
-  rocks_home = "/Users/mirven/Projects/luarocks"
+  rocks_home = "/Users/mirven/Projects"
 
   desc "Uploads the current copy of the code to my rockserver"      
   task :default => [:rockspec, :package, :release] do
@@ -30,11 +30,11 @@ namespace :rock do
   end
   
   task :release do
-    `cp underscore.lua-#{version}.rockspec #{rocks_home}`
-    `cp underscore.lua-#{version}.zip #{rocks_home}`
+    `cp out/underscore.lua-#{version}.rockspec #{rocks_home}`
+    `cp out/underscore.lua-#{version}.zip #{rocks_home}`
     Dir.chdir rocks_home do
-      `luarocks-admin  make_manifest luarocks`
-      `s3sync -r luarocks/ marcusirven:rocks --public-read`
+      puts `luarocks-admin  make_manifest luarocks`
+      puts `s3sync -r luarocks/ marcusirven:rocks --public-read`
     end
   end
 end
