@@ -1,0 +1,19 @@
+body {
+	background-color: #ebeff9;
+}
+
+li {
+	list-style-type: none; 
+	margin-left: 0; 
+	padding-left: 1em;
+}
+
+.function_index h3 { font-size: 15px; } 
+
+pre {
+	border-left: 4px ridge #aaa999;
+	
+	font-size:12px;
+	margin:0 0 30px;
+	padding:2px 0 2px 12px;
+}

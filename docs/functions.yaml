@@ -1,0 +1,125 @@
+map_functions:
+  pretty: Map Functions
+  functions:  
+    - name:
+        map
+      params: 
+        iter, func
+      description:
+        Produces a new array by mapping each value in iter through a transformation function.
+      example: |
+        _.map({1,2,3}, function(i) return i*2 end)
+
+    - name: 
+        each
+      params: 
+        iter, func
+      description:
+        Passes each value to function(i) and returns the input.
+      example: |
+        _.each({1,2,3}, print)
+        => {1,2,3}
+
+    - name: 
+        select
+      params: 
+        iter, func
+      description:
+        Removes items that do not match the provided criteria.
+      example: |
+        _.select({1,2,3}, function(i) return i%2 == 1 end)
+        => {1,3}
+
+    - name: 
+        reject
+      params: 
+        iter, func
+      description:
+        Removes items that match the provided criteria.
+      example: |
+        _.reject({1,2,3}, function(i) return i%2 == 1 end)
+        => {2}
+
+    - name: 
+        invoke
+      params: 
+        foo, blah
+      description:
+        Calls a function with specified name on each item using the colon operator.
+      example: |
+        Person = {}
+        Person.__index = Person 
+        function Person:new(name) 
+          return setmetatable({ name=name }, self) 
+        end 
+        function Person:print() 
+          print(self.name) 
+        end 
+        _.invoke({ Person:new("Tom"), Person:new("Dick"), Person:new("Harry") }, "print") 
+        => Calls person:print() on each Person
+
+    - name: 
+        pluck
+      params: 
+        iter, property_name
+      description:
+        An convenient version of the common use-case of map: extracting a list of properties.
+      example: |
+        _.pluck({ {id=1}, {id=2}, {id=3} }, 'id') 
+        => { 1, 2, 3 }
+
+reduce_functions:
+  pretty: Reduce Functions
+  functions:    
+    - name: 
+        to_array
+      params: 
+        iter
+      description:
+        Collects all values into a new array.
+      example: |
+        _.to_array(string.gmatch("dog cat goat", "%S+")) 
+        => { "dog", "cat", "goat" }
+
+    - name: 
+        sort
+      params: 
+        iter, [comparison_func]
+      description:
+        Returns an array with all elements sorted by the comparison function, by default it uses the < operator. If an array
+        is passed in it will sort the elements in place and not create a new array.
+      example: |
+        _.sort({ 3, 1, 2}) 
+        => { 1, 2, 3 }
+
+table_functions:
+  pretty: Table Functions
+  functions:    
+    - name: 
+        extend
+      params: 
+        destination, source
+      description:
+        Copy all of the properties in the source object over to the destination object.
+      example: |
+        _.extend({ name = 'moe' }, { age = 50 }) 
+        => { name = 'moe', age = 50 }
+
+function_functions:
+  pretty: Function Functions
+  functions:    
+    - name: 
+        wrap
+      params: 
+        func, wrapper
+      description:
+        Wraps the first function inside of the wrapper function, passing it as the first argument. This allows the wrapper to execute code before and after the function runs, adjust the arguments, and execute it conditionally.
+      example: |
+        hello = function(name) 
+          return "hello: "..name 
+        end 
+        hello = _.wrap(hello, function(func, ...) 
+          return "before, "..func(...)..", after" 
+        end) 
+        hello('moe') 
+        => before, hello: moe, after

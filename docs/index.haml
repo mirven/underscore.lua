@@ -1,0 +1,111 @@
+!!! Strict
+%html
+  %head
+    %title Underscore.lua
+    %meta{ "http-equiv" => "Content-type", "content" => "text/html; charset=utf-8" }
+
+    - %w{ reset text 960 main }.each do |file|
+      %link{ :rel => "stylesheet", :type => "text/css", :href => "css/#{file}.css" }
+  
+    %script{ :src => "js/shBrushLua.js" }
+  %body
+    - function_categories = [ map_functions, reduce_functions, table_functions, function_functions ]
+    
+    %a{ :href => "http://github.com/mirven/underscore.lua" }
+      %img{ :style => "position: absolute; top: 0; right: 0; border: 0;", :src => "http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png", :alt => "Fork me on GitHub" }
+    .container_12
+      .grid_3.function_index        
+      
+        - function_categories.each do |cat|
+          %h3= cat["pretty"]
+          %ul
+            - cat["functions"].each do |func|
+              %li
+                %a{ :href => "##{func["name"]}"}= func["name"]
+      .grid_7
+        %h1 Underscore.lua
+        %p
+          Underscore.lua is a Lua library that provides a set of utility functions for dealing with
+          iterators, arrays, tables, and functions. It is <b>heavily</b> inspired by 
+          <a href="http://documentcloud.github.com/underscore">Underscore.js</a>. Although the code was
+          not referenced during the writing of this library the documentation, examples, and api are basically
+          ripped off from them.
+  
+        %h2 Installing
+    
+        %p 
+          It can be installed with 
+          %a{ :href => "http://www.luarocks.org" } LuaRocks
+          via: 
+          %code luarocks install underscore.lua --from=http://marcusirven.s3.amazonaws.com/rocks/
+        %p 
+          Alternatively underscore.lua can be downloaded directly from
+          %a{ :href => "http://github.com/mirven/underscore.lua/raw/0.2-1/lib/underscore.lua" } here.
+  
+        %p 
+          The source code is 
+          %a{ :href => "http://github.com/mirven/underscore.lua" } available
+          at Github.
+
+        %h2 Object-Oriented and Functional Styles
+        %p 
+          You can use Underscore in either an object-oriented or a functional style, 
+          depending on your preference. The following two lines of code are identical 
+          ways to double a list of numbers.
+
+        %pre
+          :preserve
+            _.map({1, 2, 3}, function(n) return n * 2 end)
+            _({1, 2, 3}):map(function(n) return n * 2 end)
+    
+        %p
+          Using the object-oriented style allows you to chain together methods. Calling chain on a 
+          wrapped object will cause all future method calls to return wrapped objects as well. When 
+          you've finished the computation, use value to retrieve the final value. Here's an example 
+          of chaining together a map/flatten/reduce, in order to get the word count of every word in a song.
+
+        %pre
+          :preserve
+            local lyrics = {
+              { line = 1, words = "I'm a lumberjack and I'm okay" },
+              { line = 2, words = "I sleep all night and I work all day" },
+              { line = 3, words = "He's a lumberjack and he's okay" },
+              { line = 4, words = "He sleeps all night and he works all day" }
+            }
+    
+            _(lyrics):chain()
+              :map(function(line) 
+                local words = {}
+                for w in line.words:gmatch("%S+") do
+                  words[#words+1] = w   
+                end
+                return words
+              end)
+              :flatten()
+              :reduce({}, function(counts, word)
+                counts[word] = (counts[word] or 0) + 1
+                return counts
+              end):value()
+        %p Note: This can be written even more succinctly as (notice the map function):
+        %pre
+          :preserve        
+            _(lyrics):chain()
+              :map(function(line) return _.to_array(line.words:gmatch("%S+")) end)
+              :flatten()
+              :reduce({}, function(counts, word)
+                counts[word] = (counts[word] or 0) + 1
+                return counts
+              end):value()
+                    
+        %h2 Functions
+        
+        - function_categories.each do |cat|
+          %h3= cat["pretty"]
+    
+          - cat["functions"].each do |func|
+            %div{ :id => func["name"] }
+              %p
+                %strong= func["name"]
+                %code= "_.#{func["name"]}(#{func["params"]})"
+              %p.description= func["description"]
+              %pre= func["example"]
