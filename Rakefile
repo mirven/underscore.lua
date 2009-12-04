@@ -43,9 +43,11 @@ desc "Updates http://mirven.github.com/underscore.lua"
 task :pages => :doc do
   `cp -r docs docs.tmp`
   `git checkout gh-pages`
-  `cp docs.tmp/* .`
+  `cp -r docs.tmp/* .`
   `rm -rf docs.tmp`
-  `git commit -a -m "update pages"`
+  `git add css`
+  `git add *.html`
+  `git commit -m "update pages"`
   `git push origin gh-pages`
   `git checkout master`
 end
