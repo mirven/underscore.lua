@@ -391,7 +391,7 @@ chaining_functions:
     - name: 
         value
       description:
-        Stops chaining and returns the current value;
+        Stops chaining and returns the current value.
       example: |  
         _.({1,2,3,4}):chain():map(function(i) return i+1 end):select(function(i) i%2 == 0 end):value()
         => { 2,4 }
