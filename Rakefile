@@ -36,6 +36,10 @@ namespace :rock do
       puts `luarocks-admin  make_manifest luarocks`
       puts `s3sync -r luarocks/ marcusirven:rocks --public-read`
     end
+    
+    `git tag -a -m "tagging version #{version}" #{version}`
+    `git push origin --tags`
+    
   end
 end
 
