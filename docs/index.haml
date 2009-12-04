@@ -97,15 +97,19 @@
                 return counts
               end):value()
                     
-        %h2 Functions
+        %h2 Reference
         
         - function_categories.each do |cat|
           %h3= cat["pretty"]
     
           - cat["functions"].each do |func|
-            %div{ :id => func["name"] }
+            .function{ :id => func["name"] }
               %p
-                %strong= func["name"]
+                %strong.name= func["name"]
                 %code= "_.#{func["name"]}(#{func["params"]})"
+                - if func["aliases"]
+                  %span.alias 
+                    Aliases: 
+                    %strong= func["aliases"].join(",")
               %p.description= func["description"]
-              %pre= func["example"]
+              %pre.example= func["example"]

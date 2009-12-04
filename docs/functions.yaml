@@ -85,7 +85,7 @@ reduce_functions:
       params: 
         iter, memo, func
       description:
-        Collects all values into a new array.
+        Boils down a list of values into a single value. Memo is the initial state of the reduction, and each successive step of it should be returned by func.
       example: |
         _.reduce({1,2,3}, 0, function(memo, i) return memo+i end)
         => 6
@@ -131,7 +131,7 @@ reduce_functions:
       params: 
         iter, func
       description: |
-        Looks through a list returning the first element that matches a truth function. The function returns as soon as it finds an acceptable element and doesn't traverse the entire list.
+        Looks through a list returning the first element that matches a truth function. The function returns as soon as it finds an acceptable element.
       example: |
         _.include({1,2,3,4}, 3)
         => true
@@ -201,20 +201,10 @@ array_functions:
   pretty: Array Functions
   functions:
     - name:      
-        slice
-      params:
-        array, start_index, length
-      destination:
-        Returns a section of an array starting with start_index of length items length.
-      example: |
-        _.slice({ 1, 2, 3, 4, 5 }, 2, 3) 
-        => { 2, 3, 4 }
-
-    - name:      
         flatten
       params:
         array
-      destination:
+      description:
         Flattens a nested array (the nesting can be to any depth).
       example: |
         _.flatten({1, {2}, {3, {{{4}}}}}) 
@@ -226,7 +216,7 @@ array_functions:
         - head
       params:
         array, [length]
-      destination:
+      description:
         Returns the first element of an array. Optionally it will return an array of the first n items.        
       example: |
         _.first({1,2,3}) 
@@ -240,13 +230,45 @@ array_functions:
         - tail
       params:
         array, [start_index]
-      destination:
+      description:
         Returns an array of all items except the first. Optionally it will start at start_index.
       example: |
         _.rest({1,2,3}) 
         => {2,3} 
         _.rest({1,2,3}, 2) 
         => {3}
+
+    - name:      
+        slice
+      params:
+        array, start_index, length
+      description:
+        Returns a section of an array starting with start_index of length items length.
+      example: |
+        _.slice({ 1, 2, 3, 4, 5 }, 2, 3) 
+        => { 2, 3, 4 }
+
+    - name:      
+        push
+      params:
+        array, item
+      description:
+        Inserts item at the end of an array
+      example: |
+        _.push({1,2,3}, 4)
+        => {1,2,3,4}
+      
+    - name:      
+        join
+      params:
+        array
+      description:
+        Returns a string with all items in the array concatenated together with an optional separator.
+      example: |
+        _.join({'c','a','t'})
+        => "cat"
+        _.join({'c','a','t'}, '/')
+        => "c/a/t"
 
 table_functions:
   pretty: Table Functions
@@ -265,8 +287,8 @@ table_functions:
         keys
       params: 
         object
-      description:
-        Returns an array of all the property names in a table.
+      description: |
+        Returns an array of all the property names in a table. (Note: order is not defined)
       example: |
         _.keys { name = "John", age = 25 }
         => { "name", "age" }
@@ -275,8 +297,8 @@ table_functions:
         values
       params: 
         object
-      description:
-        Returns an array of all the property values in a table.
+      description: |
+        Returns an array of all the property values in a table. (Note: order is not defined)
       example: |
         _.values { name = "John", age = 25 }
         => { "John", 25 }
