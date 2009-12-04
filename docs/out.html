@@ -39,10 +39,49 @@
         <h3>Reduce Functions</h3>
         <ul>
           <li>
+            <a href='#reduce'>reduce</a>
+          </li>
+          <li>
+            <a href='#max'>max</a>
+          </li>
+          <li>
+            <a href='#min'>min</a>
+          </li>
+          <li>
+            <a href='#include'>include</a>
+          </li>
+          <li>
+            <a href='#detect'>detect</a>
+          </li>
+          <li>
+            <a href='#all'>all</a>
+          </li>
+          <li>
+            <a href='#any'>any</a>
+          </li>
+          <li>
             <a href='#to_array'>to_array</a>
           </li>
           <li>
             <a href='#sort'>sort</a>
+          </li>
+          <li>
+            <a href='#reverse'>reverse</a>
+          </li>
+        </ul>
+        <h3>Array Functions</h3>
+        <ul>
+          <li>
+            <a href='#slice'>slice</a>
+          </li>
+          <li>
+            <a href='#flatten'>flatten</a>
+          </li>
+          <li>
+            <a href='#first'>first</a>
+          </li>
+          <li>
+            <a href='#rest'>rest</a>
           </li>
         </ul>
         <h3>Table Functions</h3>
@@ -50,11 +89,44 @@
           <li>
             <a href='#extend'>extend</a>
           </li>
+          <li>
+            <a href='#keys'>keys</a>
+          </li>
+          <li>
+            <a href='#values'>values</a>
+          </li>
+          <li>
+            <a href='#is_empty'>is_empty</a>
+          </li>
         </ul>
         <h3>Function Functions</h3>
         <ul>
           <li>
             <a href='#wrap'>wrap</a>
+          </li>
+          <li>
+            <a href='#compose'>compose</a>
+          </li>
+        </ul>
+        <h3>Utility Functions</h3>
+        <ul>
+          <li>
+            <a href='#functions'>functions</a>
+          </li>
+          <li>
+            <a href='#identity'>identity</a>
+          </li>
+          <li>
+            <a href='#no_conflict'>no_conflict</a>
+          </li>
+        </ul>
+        <h3>Chaining Functions</h3>
+        <ul>
+          <li>
+            <a href='#chain'>chain</a>
+          </li>
+          <li>
+            <a href='#value'>value</a>
           </li>
         </ul>
       </div>
@@ -150,6 +222,62 @@
           <pre>_.pluck({ {id=1}, {id=2}, {id=3} }, 'id') &#x000A;=> { 1, 2, 3 }</pre>
         </div>
         <h3>Reduce Functions</h3>
+        <div id='reduce'>
+          <p>
+            <strong>reduce</strong>
+            <code>_.reduce(iter, memo, func)</code>
+          </p>
+          <p class='description'>Collects all values into a new array.</p>
+          <pre>_.reduce({1,2,3}, 0, function(memo, i) return memo+i end)&#x000A;=> 6</pre>
+        </div>
+        <div id='max'>
+          <p>
+            <strong>max</strong>
+            <code>_.max(iter, [func])</code>
+          </p>
+          <p class='description'>Returns the item with the largest value. If a func is provided it will be used on each value to generate the criterion by which the value is ranked.</p>
+          <pre>_.max({1,2,3,4}) &#x000A;=> 4&#x000A;_.max({ {age=15}, {age=12}, {age=19} }, function(p) return p.age end) &#x000A;=> {age=19}</pre>
+        </div>
+        <div id='min'>
+          <p>
+            <strong>min</strong>
+            <code>_.min(iter, [func])</code>
+          </p>
+          <p class='description'>Returns the item with the smallest value. If a func is provided it will be used on each value to generate the criterion by which the value is ranked.</p>
+          <pre>_.max({1,2,3,4}) &#x000A;=> 1&#x000A;_.max({ {age=15}, {age=12}, {age=19} }, function(p) return p.age end) &#x000A;=> {age=12}</pre>
+        </div>
+        <div id='include'>
+          <p>
+            <strong>include</strong>
+            <code>_.include(iter, value)</code>
+          </p>
+          <p class='description'>Returns true if the list include's value. Uses the == operator.</p>
+          <pre>_.detect({1,2,3,4}, function(i) return i%2 == 0 end)&#x000A;=> true&#x000A;_.include({1,3,5}, function(i) return i%2 == 0 end)&#x000A;=> false</pre>
+        </div>
+        <div id='detect'>
+          <p>
+            <strong>detect</strong>
+            <code>_.detect(iter, func)</code>
+          </p>
+          <p class='description'>Looks through a list returning the first element that matches a truth function. The function returns as soon as it finds an acceptable element and doesn't traverse the entire list.</p>
+          <pre>_.include({1,2,3,4}, 3)&#x000A;=> true&#x000A;_.include({1,2,3,4}, 7)&#x000A;=> false</pre>
+        </div>
+        <div id='all'>
+          <p>
+            <strong>all</strong>
+            <code>_.all(iter, [func])</code>
+          </p>
+          <p class='description'>Returns true if func(item) returns true for all item in items.</p>
+          <pre>_.all({2,4,8}, function(i) return i%2 == 0 end)        &#x000A;=> true&#x000A;_.all({1,2,3,4}, function(i) return i%2 == 0 end)        &#x000A;=> false</pre>
+        </div>
+        <div id='any'>
+          <p>
+            <strong>any</strong>
+            <code>_.any(iter, [func])</code>
+          </p>
+          <p class='description'>Returns true if func(item) returns true for any item in items.</p>
+          <pre>_.any({1,2,3,4}, function(i) return i%2 == 0 end)        &#x000A;=> true&#x000A;_.any({1,3,5}, function(i) return i%2 == 0 end)        &#x000A;=> false</pre>
+        </div>
         <div id='to_array'>
           <p>
             <strong>to_array</strong>
@@ -166,6 +294,47 @@
           <p class='description'>Returns an array with all elements sorted by the comparison function, by default it uses the < operator. If an array is passed in it will sort the elements in place and not create a new array.</p>
           <pre>_.sort({ 3, 1, 2}) &#x000A;=> { 1, 2, 3 }</pre>
         </div>
+        <div id='reverse'>
+          <p>
+            <strong>reverse</strong>
+            <code>_.reverse(iter, [comparison_func])</code>
+          </p>
+          <p class='description'>Iterates over all the items and returns a new array with the items in reverse order.</p>
+          <pre>_.reverse({ 1, 2, 3}) &#x000A;=> { 3, 2, 1 }</pre>
+        </div>
+        <h3>Array Functions</h3>
+        <div id='slice'>
+          <p>
+            <strong>slice</strong>
+            <code>_.slice(array, start_index, length)</code>
+          </p>
+          <p class='description'></p>
+          <pre>_.slice({ 1, 2, 3, 4, 5 }, 2, 3) &#x000A;=> { 2, 3, 4 }</pre>
+        </div>
+        <div id='flatten'>
+          <p>
+            <strong>flatten</strong>
+            <code>_.flatten(array)</code>
+          </p>
+          <p class='description'></p>
+          <pre>_.flatten({1, {2}, {3, {{{4}}}}}) &#x000A;=> { 1, 2, 3, 4 }</pre>
+        </div>
+        <div id='first'>
+          <p>
+            <strong>first</strong>
+            <code>_.first(array, [length])</code>
+          </p>
+          <p class='description'></p>
+          <pre>_.first({1,2,3}) &#x000A;=> 1&#x000A;_.first({1,2,3}, 2) &#x000A;=> {1,2,}</pre>
+        </div>
+        <div id='rest'>
+          <p>
+            <strong>rest</strong>
+            <code>_.rest(array, [start_index])</code>
+          </p>
+          <p class='description'></p>
+          <pre>_.rest({1,2,3}) &#x000A;=> {2,3} &#x000A;_.rest({1,2,3}, 2) &#x000A;=> {3}</pre>
+        </div>
         <h3>Table Functions</h3>
         <div id='extend'>
           <p>
@@ -175,6 +344,30 @@
           <p class='description'>Copy all of the properties in the source object over to the destination object.</p>
           <pre>_.extend({ name = 'moe' }, { age = 50 }) &#x000A;=> { name = 'moe', age = 50 }</pre>
         </div>
+        <div id='keys'>
+          <p>
+            <strong>keys</strong>
+            <code>_.keys(object)</code>
+          </p>
+          <p class='description'>Returns an array of all the property names in a table.</p>
+          <pre>_.keys { name = "John", age = 25 }&#x000A;=> { "name", "age" }</pre>
+        </div>
+        <div id='values'>
+          <p>
+            <strong>values</strong>
+            <code>_.values(object)</code>
+          </p>
+          <p class='description'>Returns an array of all the property values in a table.</p>
+          <pre>_.values { name = "John", age = 25 }&#x000A;=> { "John", 25 }</pre>
+        </div>
+        <div id='is_empty'>
+          <p>
+            <strong>is_empty</strong>
+            <code>_.is_empty(object)</code>
+          </p>
+          <p class='description'>Returns true if object contains no values.</p>
+          <pre>_.is_empty({}) &#x000A;=> true &#x000A;-.is_empty({ name = "moe" }) &#x000A;=> false</pre>
+        </div>
         <h3>Function Functions</h3>
         <div id='wrap'>
           <p>
@@ -183,6 +376,56 @@
           </p>
           <p class='description'>Wraps the first function inside of the wrapper function, passing it as the first argument. This allows the wrapper to execute code before and after the function runs, adjust the arguments, and execute it conditionally.</p>
           <pre>hello = function(name) &#x000A;  return "hello: "..name &#x000A;end &#x000A;hello = _.wrap(hello, function(func, ...) &#x000A;  return "before, "..func(...)..", after" &#x000A;end) &#x000A;hello('moe') &#x000A;=> before, hello: moe, after</pre>
+        </div>
+        <div id='compose'>
+          <p>
+            <strong>compose</strong>
+            <code>_.compose(func1, func2, [...])</code>
+          </p>
+          <p class='description'>Returns the composition of a list of functions, where each function consumes the return value of the function that follows. In math terms, composing the functions f(), g(), and h() produces f(g(h())).</p>
+          <pre>greet = function(name) &#x000A;  return "hi: "..name &#x000A;end &#x000A;exclaim = function(statement) &#x000A;  return statement.."!" &#x000A;end &#x000A;welcome = _.compose(print, greet, exclaim) &#x000A;welcome('moe') &#x000A;=> hi: moe!</pre>
+        </div>
+        <h3>Utility Functions</h3>
+        <div id='functions'>
+          <p>
+            <strong>functions</strong>
+            <code>_.functions()</code>
+          </p>
+          <p class='description'>Returns a list of function names in this library.</p>
+          <pre>_.functions() &#x000A;=> { 'each', 'map', 'reduce', ... }</pre>
+        </div>
+        <div id='identity'>
+          <p>
+            <strong>identity</strong>
+            <code>_.identity(v)</code>
+          </p>
+          <p class='description'>Identity function, simply returns whatever is passed in. This function looks useless, but is used within Underscore as a default function.</p>
+          <pre>_.identity("foo") &#x000A;=> "foo"</pre>
+        </div>
+        <div id='no_conflict'>
+          <p>
+            <strong>no_conflict</strong>
+            <code>_.no_conflict()</code>
+          </p>
+          <p class='description'>Restores the _ variable and returns the _ object so that it can be assigned to another variable.</p>
+          <pre>us = _.no_conflict() &#x000A;us.each({1,2,3}, print)</pre>
+        </div>
+        <h3>Chaining Functions</h3>
+        <div id='chain'>
+          <p>
+            <strong>chain</strong>
+            <code>_.chain()</code>
+          </p>
+          <p class='description'>Puts underscore into chaining mode.</p>
+          <pre>_.({1,2,3,4}):chain():map(function(i) return i+1 end):select(function(i) i%2 == 0 end):value()&#x000A;=> { 2,4 }</pre>
+        </div>
+        <div id='value'>
+          <p>
+            <strong>value</strong>
+            <code>_.value()</code>
+          </p>
+          <p class='description'>Stops chaining and returns the current value;</p>
+          <pre>_.({1,2,3,4}):chain():map(function(i) return i+1 end):select(function(i) i%2 == 0 end):value()&#x000A;=> { 2,4 }</pre>
         </div>
       </div>
     </div>

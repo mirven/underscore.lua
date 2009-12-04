@@ -3,6 +3,8 @@ map_functions:
   functions:  
     - name:
         map
+      aliases:
+        - collect
       params: 
         iter, func
       description:
@@ -12,6 +14,8 @@ map_functions:
 
     - name: 
         each
+      aliases:
+        - for_each
       params: 
         iter, func
       description:
@@ -22,6 +26,8 @@ map_functions:
 
     - name: 
         select
+      aliases:
+        - filter        
       params: 
         iter, func
       description:
@@ -72,6 +78,95 @@ reduce_functions:
   pretty: Reduce Functions
   functions:    
     - name: 
+        reduce
+      aliases:
+        - inject
+        - foldl
+      params: 
+        iter, memo, func
+      description:
+        Collects all values into a new array.
+      example: |
+        _.reduce({1,2,3}, 0, function(memo, i) return memo+i end)
+        => 6
+
+    - name: 
+        max
+      params: 
+        iter, [func]
+      description: |
+        Returns the item with the largest value. If a func is provided it will be used on each value to generate the criterion by which the value is ranked.        
+      example: |
+        _.max({1,2,3,4}) 
+        => 4
+        _.max({ {age=15}, {age=12}, {age=19} }, function(p) return p.age end) 
+        => {age=19}
+
+    - name: 
+        min
+      params: 
+        iter, [func]
+      description: |
+        Returns the item with the smallest value. If a func is provided it will be used on each value to generate the criterion by which the value is ranked.
+      example: |
+        _.max({1,2,3,4}) 
+        => 1
+        _.max({ {age=15}, {age=12}, {age=19} }, function(p) return p.age end) 
+        => {age=12}
+
+    - name: 
+        include
+      params: 
+        iter, value
+      description: |
+        Returns true if the list include's value. Uses the == operator.
+      example: |
+        _.detect({1,2,3,4}, function(i) return i%2 == 0 end)
+        => true
+        _.include({1,3,5}, function(i) return i%2 == 0 end)
+        => false
+
+    - name: 
+        detect
+      params: 
+        iter, func
+      description: |
+        Looks through a list returning the first element that matches a truth function. The function returns as soon as it finds an acceptable element and doesn't traverse the entire list.
+      example: |
+        _.include({1,2,3,4}, 3)
+        => true
+        _.include({1,2,3,4}, 7)
+        => false
+
+    - name: 
+        all
+      aliases:
+        - every
+      params: 
+        iter, [func]      
+      description: |
+        Returns true if func(item) returns true for all item in items.
+      example: |
+        _.all({2,4,8}, function(i) return i%2 == 0 end)        
+        => true
+        _.all({1,2,3,4}, function(i) return i%2 == 0 end)        
+        => false
+
+    - name: 
+        any
+      aliases:
+        - some
+      params: 
+        iter, [func]
+      description: |
+        Returns true if func(item) returns true for any item in items.
+      example: |
+        _.any({1,2,3,4}, function(i) return i%2 == 0 end)        
+        => true
+        _.any({1,3,5}, function(i) return i%2 == 0 end)        
+        => false
+
+    - name: 
         to_array
       params: 
         iter
@@ -92,6 +187,67 @@ reduce_functions:
         _.sort({ 3, 1, 2}) 
         => { 1, 2, 3 }
 
+    - name: 
+        reverse
+      params: 
+        iter, [comparison_func]
+      description:
+        Iterates over all the items and returns a new array with the items in reverse order.
+      example: |
+        _.reverse({ 1, 2, 3}) 
+        => { 3, 2, 1 }
+
+array_functions:
+  pretty: Array Functions
+  functions:
+    - name:      
+        slice
+      params:
+        array, start_index, length
+      destination:
+        Returns a section of an array starting with start_index of length items length.
+      example: |
+        _.slice({ 1, 2, 3, 4, 5 }, 2, 3) 
+        => { 2, 3, 4 }
+
+    - name:      
+        flatten
+      params:
+        array
+      destination:
+        Flattens a nested array (the nesting can be to any depth).
+      example: |
+        _.flatten({1, {2}, {3, {{{4}}}}}) 
+        => { 1, 2, 3, 4 }
+
+    - name:      
+        first
+      aliases:
+        - head
+      params:
+        array, [length]
+      destination:
+        Returns the first element of an array. Optionally it will return an array of the first n items.        
+      example: |
+        _.first({1,2,3}) 
+        => 1
+        _.first({1,2,3}, 2) 
+        => {1,2,}
+        
+    - name:      
+        rest
+      aliases:
+        - tail
+      params:
+        array, [start_index]
+      destination:
+        Returns an array of all items except the first. Optionally it will start at start_index.
+      example: |
+        _.rest({1,2,3}) 
+        => {2,3} 
+        _.rest({1,2,3}, 2) 
+        => {3}
+
 table_functions:
   pretty: Table Functions
   functions:    
@@ -105,6 +261,37 @@ table_functions:
         _.extend({ name = 'moe' }, { age = 50 }) 
         => { name = 'moe', age = 50 }
 
+    - name: 
+        keys
+      params: 
+        object
+      description:
+        Returns an array of all the property names in a table.
+      example: |
+        _.keys { name = "John", age = 25 }
+        => { "name", "age" }
+
+    - name: 
+        values
+      params: 
+        object
+      description:
+        Returns an array of all the property values in a table.
+      example: |
+        _.values { name = "John", age = 25 }
+        => { "John", 25 }
+
+    - name: 
+        is_empty
+      params: 
+        object
+      description:
+        Returns true if object contains no values.
+      example: |
+        _.is_empty({}) 
+        => true 
+        -.is_empty({ name = "moe" }) 
+        => false      
 function_functions:
   pretty: Function Functions
   functions:    
@@ -123,3 +310,66 @@ function_functions:
         end) 
         hello('moe') 
         => before, hello: moe, after
+    - name: 
+        compose
+      params: 
+        func1, func2, [...]
+      description:
+        Returns the composition of a list of functions, where each function consumes the return value of the function that follows. In math terms, composing the functions f(), g(), and h() produces f(g(h())).
+      example: |
+        greet = function(name) 
+          return "hi: "..name 
+        end 
+        exclaim = function(statement) 
+          return statement.."!" 
+        end 
+        welcome = _.compose(print, greet, exclaim) 
+        welcome('moe') 
+        => hi: moe!
+utility_functions:
+  pretty: Utility Functions
+  functions:    
+    - name: 
+        functions
+      description:
+        Returns a list of function names in this library.
+      example: |
+        _.functions() 
+        => { 'each', 'map', 'reduce', ... }
+
+    - name: 
+        identity
+      params:
+        v
+      description:
+        Identity function, simply returns whatever is passed in. This function looks useless, but is used within Underscore as a default function.
+      example: |  
+        _.identity("foo") 
+        => "foo"
+
+    - name: 
+        no_conflict
+      description:
+        Restores the _ variable and returns the _ object so that it can be assigned to another variable.
+      example: |  
+        us = _.no_conflict() 
+        us.each({1,2,3}, print)
+
+chaining_functions:
+  pretty: Chaining Functions
+  functions:    
+    - name: 
+        chain
+      description:
+        Puts underscore into chaining mode.
+      example: |
+        _.({1,2,3,4}):chain():map(function(i) return i+1 end):select(function(i) i%2 == 0 end):value()
+        => { 2,4 }
+
+    - name: 
+        value
+      description:
+        Stops chaining and returns the current value;
+      example: |  
+        _.({1,2,3,4}):chain():map(function(i) return i+1 end):select(function(i) i%2 == 0 end):value()
+        => { 2,4 }
