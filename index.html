@@ -274,7 +274,7 @@
             <code>_.include(iter, value)</code>
           </p>
           <p class='description'>Returns true if the list include's value. Uses the == operator.</p>
-          <pre class='example'>_.detect({1,2,3,4}, function(i) return i%2 == 0 end)&#x000A;=> true&#x000A;_.include({1,3,5}, function(i) return i%2 == 0 end)&#x000A;=> false</pre>
+          <pre class='example'>_.include({1,2,3,4}, function(i) return i%2 == 0 end)&#x000A;=> true&#x000A;_.include({1,3,5}, function(i) return i%2 == 0 end)&#x000A;=> false</pre>
         </div>
         <div class='function' id='detect'>
           <p>
@@ -282,7 +282,7 @@
             <code>_.detect(iter, func)</code>
           </p>
           <p class='description'>Looks through a list returning the first element that matches a truth function. The function returns as soon as it finds an acceptable element.</p>
-          <pre class='example'>_.include({1,2,3,4}, 3)&#x000A;=> true&#x000A;_.include({1,2,3,4}, 7)&#x000A;=> false</pre>
+          <pre class='example'>_.detect({1,2,3,4}, func(i) return i > 3 end)&#x000A;=> true&#x000A;_.detect({1,2,3,4}, func(i) return i > 7 end)&#x000A;=> false</pre>
         </div>
         <div class='function' id='all'>
           <p>
