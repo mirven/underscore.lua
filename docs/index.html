@@ -125,6 +125,9 @@
           <li>
             <a href='#no_conflict'>no_conflict</a>
           </li>
+          <li>
+            <a href='#iter'>iter</a>
+          </li>
         </ul>
         <h3>Chaining Functions</h3>
         <ul>
@@ -282,7 +285,7 @@
             <code>_.detect(iter, func)</code>
           </p>
           <p class='description'>Looks through a list returning the first element that matches a truth function. The function returns as soon as it finds an acceptable element.</p>
-          <pre class='example'>_.detect({1,2,3,4}, func(i) return i > 3 end)&#x000A;=> true&#x000A;_.detect({1,2,3,4}, func(i) return i > 7 end)&#x000A;=> false</pre>
+          <pre class='example'>_.detect({1,2,3,4}, func(i) return i > 3 end)&#x000A;=> 4&#x000A;_.detect({1,2,3,4}, func(i) return i > 7 end)&#x000A;=> nil</pre>
         </div>
         <div class='function' id='all'>
           <p>
@@ -463,6 +466,14 @@
           </p>
           <p class='description'>Restores the _ variable and returns the _ object so that it can be assigned to another variable.</p>
           <pre class='example'>us = _.no_conflict() &#x000A;us.each({1,2,3}, print)</pre>
+        </div>
+        <div class='function' id='iter'>
+          <p>
+            <strong class='name'>iter</strong>
+            <code>_.iter()</code>
+          </p>
+          <p class='description'>Creates an iterator function over an array.</p>
+          <pre class='example'>for i in _.iter({1,2,3}) do&#x000A;  print(i)&#x000A;end</pre>
         </div>
         <h3>Chaining Functions</h3>
         <div class='function' id='chain'>

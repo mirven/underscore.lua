@@ -134,9 +134,9 @@ reduce_functions:
         Looks through a list returning the first element that matches a truth function. The function returns as soon as it finds an acceptable element.
       example: |
         _.detect({1,2,3,4}, func(i) return i > 3 end)
-        => true
+        => 4
         _.detect({1,2,3,4}, func(i) return i > 7 end)
-        => false
+        => nil
 
     - name: 
         all
@@ -376,6 +376,15 @@ utility_functions:
       example: |  
         us = _.no_conflict() 
         us.each({1,2,3}, print)
+
+    - name: 
+        iter
+      description:
+        Creates an iterator function over an array.
+      example: |  
+        for i in _.iter({1,2,3}) do
+          print(i)
+        end
 
 chaining_functions:
   pretty: Chaining Functions
