@@ -1,5 +1,5 @@
-map_functions:
-  pretty: Map Functions
+iterator_functions:
+  pretty: Iterator Functions
   functions:  
     - name:
         map
@@ -75,9 +75,6 @@ map_functions:
         _.pluck({ {id=1}, {id=2}, {id=3} }, 'id') 
         => { 1, 2, 3 }
 
-reduce_functions:
-  pretty: Reduce Functions
-  functions:    
     - name: 
         reduce
       aliases:

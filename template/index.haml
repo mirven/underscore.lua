@@ -9,7 +9,7 @@
   
     %script{ :src => "js/shBrushLua.js" }
   %body
-    - function_categories = [ map_functions, reduce_functions, array_functions, table_functions, function_functions, utility_functions, chaining_functions ]
+    - function_categories = [ iterator_functions, array_functions, table_functions, function_functions, utility_functions, chaining_functions ]
     
     %a{ :href => "http://github.com/mirven/underscore.lua" }
       %img{ :style => "position: absolute; top: 0; right: 0; border: 0;", :src => "http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png", :alt => "Fork me on GitHub" }
@@ -26,10 +26,8 @@
         %h1 Underscore.lua
         %p
           Underscore.lua is a Lua library that provides a set of utility functions for dealing with
-          iterators, arrays, tables, and functions. It is <b>heavily</b> inspired by 
-          <a href="http://documentcloud.github.com/underscore">Underscore.js</a>. Although the code was
-          not referenced during the writing of this library the documentation, examples, and api are basically
-          ripped off from them.
+          iterators, arrays, tables, and functions. It's api and documentation are <b>heavily</b> inspired by 
+          <a href="http://documentcloud.github.com/underscore">Underscore.js</a>.
   
         %h2 Installing
     
@@ -50,6 +48,52 @@
           %a{ :href => "http://github.com/mirven/underscore.lua" } available
           at Github.
 
+        %h2 Iterator Functions and Arrays
+        %p All the iterator functions can take either an iterator such as:
+        %pre
+          :preserve
+            function sq(n)
+              return coroutine.wrap(function() 
+                for i=1,n do
+                  coroutine.yield(i*i)
+                end
+              end)
+            end
+            
+            _.each(sq(5), print)
+            => 1
+            => 4
+            => 9
+            => 16
+            => 25
+
+        %p or and array such as:
+
+        %pre
+          :preserve
+            _.each({1,2,3,4,5}, print)
+            => 1
+            => 2
+            => 3
+            => 4
+            => 5
+            
+        %p 
+          This is accomplished with
+          %code _.iter()
+          which with create an iterator over and array or if passed a function it will use that.
+      
+        %pre
+          :preserve
+            for i in _.iter({1,2,3,4,5}) do
+              print(i)
+            end
+            => 1
+            => 2
+            => 3
+            => 4
+            => 5
+        
         %h2 Object-Oriented and Functional Styles
         %p 
           You can use Underscore in either an object-oriented or a functional style, 
