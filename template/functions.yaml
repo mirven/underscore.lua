@@ -11,6 +11,7 @@ map_functions:
         Produces a new array by mapping each value in iter through a transformation function.
       example: |
         _.map({1,2,3}, function(i) return i*2 end)
+        => { 2,4,6 }
 
     - name: 
         each
