@@ -354,6 +354,12 @@ function Underscore.funcs.wrap(func, wrapper)
 	end
 end
 
+function Underscore.funcs.curry(func, argument)
+	return function(...)
+		return func(argument, ...)
+	end
+end
+
 function Underscore.functions() 
 	return Underscore.keys(Underscore.funcs)
 end
