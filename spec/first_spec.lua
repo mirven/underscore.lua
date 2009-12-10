@@ -1,5 +1,5 @@
 require 'luaspec'
-require 'underscore'
+_ = require 'underscore'
 
 describe["_.first"] = function()
 	it["should return the first item"] = function()

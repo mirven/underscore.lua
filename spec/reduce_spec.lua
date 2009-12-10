@@ -1,5 +1,5 @@
 require 'luaspec'
-require 'underscore'
+_ = require 'underscore'
 
 describe["_.reduce"] = function()
 	it["should apply the reduction function to each item in the list"] = function()

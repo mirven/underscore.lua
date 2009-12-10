@@ -1,5 +1,5 @@
 require 'luaspec'
-require 'underscore'
+_ = require 'underscore'
 
 describe["_.sort"] = function()
 	describe["when not providing a comparison function"] = function()

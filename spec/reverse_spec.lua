@@ -1,5 +1,5 @@
 require 'luaspec'
-require 'underscore'
+_ = require 'underscore'
 
 describe["_.reverse"] = function()
 	it["should return a reversed array"] = function()

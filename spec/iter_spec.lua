@@ -1,5 +1,5 @@
 require 'luaspec'
-require 'underscore'
+_ = require 'underscore'
 
 describe["_.iter"] = function()
 	describe["when passed an array"] = function()

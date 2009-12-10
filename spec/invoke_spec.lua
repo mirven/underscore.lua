@@ -1,6 +1,6 @@
 require 'luaspec'
 require 'luamock'
-require 'underscore'
+_ = require 'underscore'
 
 describe["_.invoke"] = function()
 	before = function()

@@ -1,5 +1,5 @@
 require 'luaspec'
-require 'underscore'
+_ = require 'underscore'
 
 describe["_.include"] = function()
 	it["should return the true if the item is in the list"] = function()

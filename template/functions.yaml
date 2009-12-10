@@ -368,14 +368,6 @@ utility_functions:
         => "foo"
 
     - name: 
-        no_conflict
-      description:
-        Restores the _ variable and returns the _ object so that it can be assigned to another variable.
-      example: |  
-        us = _.no_conflict() 
-        us.each({1,2,3}, print)
-
-    - name: 
         iter
       description:
         Creates an iterator function over an array.

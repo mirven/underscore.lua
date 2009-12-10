@@ -1,6 +1,6 @@
 require 'luaspec'
 require 'luamock'
-require 'underscore'
+_ = require 'underscore'
 
 describe["_.curry"] = function()
 	it["should use the provided argument as the first argument for calls"] = function()

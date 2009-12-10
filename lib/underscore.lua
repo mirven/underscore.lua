@@ -24,8 +24,6 @@
 --- Underscore is a set of utility functions for dealing with 
 -- iterators, arrays, tables, and functions.
 
-local previous_underscore = _
-
 local Underscore = { funcs = {} }
 Underscore.__index = Underscore
 
@@ -55,11 +53,6 @@ end
 -- => "foo"
 function Underscore.identity(value)
 	return value
-end
-
-function Underscore:no_conflict()
-  _ = previous_underscore
-  return self
 end
 
 -- chaining
@@ -402,4 +395,7 @@ end
 
 wrap_functions_for_oo_support()
 
-_ = Underscore:new()
+underscore = Underscore:new()
+
+return underscore
+

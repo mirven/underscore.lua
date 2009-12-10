@@ -1,5 +1,5 @@
 require 'luaspec'
-require 'underscore'
+_ = require 'underscore'
 
 describe["_.all"] = function()
 	describe["when providing a truth function"] = function()

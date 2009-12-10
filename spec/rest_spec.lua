@@ -1,5 +1,5 @@
 require 'luaspec'
-require 'underscore'
+_ = require 'underscore'
 
 describe["_.rest"] = function()
 	it["should all items but the first"] = function()

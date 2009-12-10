@@ -1,5 +1,5 @@
 require 'luaspec'
-require 'underscore'
+_ = require 'underscore'
 
 describe["_.join"] = function()
 	describe["when not specifying a separator"] = function()

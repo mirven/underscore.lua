@@ -1,5 +1,5 @@
 require 'luaspec'
-require 'underscore'
+_ = require 'underscore'
 
 describe["chaining"] = function()
 	it["should be able to chain calls and retrieve the value"] = function()

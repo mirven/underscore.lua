@@ -1,5 +1,5 @@
 require 'luaspec'
-require 'underscore'
+_ = require 'underscore'
 
 describe["_.values"] = function()
 	it["should return an array with all property values"] = function()
