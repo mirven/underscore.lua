@@ -14,7 +14,7 @@ end
 
 
 namespace :rock do
-  version = "0.3-0"
+  version = "0.4-0"
   rocks_home = "/Users/mirven/Projects"
 
   desc "Uploads the current copy of the code to my rockserver"      
