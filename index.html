@@ -84,6 +84,15 @@
             <a href='#push'>push</a>
           </li>
           <li>
+            <a href='#pop'>pop</a>
+          </li>
+          <li>
+            <a href='#shift'>shift</a>
+          </li>
+          <li>
+            <a href='#unshift'>unshift</a>
+          </li>
+          <li>
             <a href='#join'>join</a>
           </li>
         </ul>
@@ -105,6 +114,9 @@
         <h3>Function Functions</h3>
         <ul>
           <li>
+            <a href='#curry'>curry</a>
+          </li>
+          <li>
             <a href='#wrap'>wrap</a>
           </li>
           <li>
@@ -120,10 +132,13 @@
             <a href='#identity'>identity</a>
           </li>
           <li>
-            <a href='#no_conflict'>no_conflict</a>
+            <a href='#iter'>iter</a>
           </li>
           <li>
-            <a href='#iter'>iter</a>
+            <a href='#range'>range</a>
+          </li>
+          <li>
+            <a href='#is_equal'>is_equal</a>
           </li>
         </ul>
         <h3>Chaining Functions</h3>
@@ -152,13 +167,20 @@
         </p>
         <p>
           Alternatively underscore.lua can be downloaded directly from
-          <a href='http://github.com/mirven/underscore.lua/raw/0.3-0/lib/underscore.lua'>here.</a>
+          <a href='http://github.com/mirven/underscore.lua/raw/0.4-0/lib/underscore.lua'>here.</a>
         </p>
         <p>
           The source code is
           <a href='http://github.com/mirven/underscore.lua'>available</a>
           at Github.
         </p>
+        <h2>Basic Usage</h2>
+        <pre>_ = require 'underscore'&#x000A;_.each({1,2,3}, print)</pre>
+        <p>
+          It is idiomatic in Lua to use the underscore character for throw away
+          variables so you can simply assign it to another variable name such as:
+        </p>
+        <pre>__ = require 'underscore'&#x000A;__.each({1,2,3}, print)&#x000A;</pre>
         <h2>Iterator Functions and Arrays</h2>
         <p>All the iterator functions can take either an iterator such as:</p>
         <pre>function sq(n)&#x000A;  return coroutine.wrap(function() &#x000A;    for i=1,n do&#x000A;      coroutine.yield(i*i)&#x000A;    end&#x000A;  end)&#x000A;end&#x000A;&#x000A;_.each(sq(5), print)&#x000A;=> 1&#x000A;=> 4&#x000A;=> 9&#x000A;=> 16&#x000A;=> 25&#x000A;</pre>
@@ -389,6 +411,30 @@
           <p class='description'>Inserts item at the end of an array</p>
           <pre class='example'>_.push({1,2,3}, 4)&#x000A;=> {1,2,3,4}</pre>
         </div>
+        <div class='function' id='pop'>
+          <p>
+            <strong class='name'>pop</strong>
+            <code>_.pop(array)</code>
+          </p>
+          <p class='description'>Removes and returns the last item in an array</p>
+          <pre class='example'>_.pop({1,2,3})&#x000A;=> 3</pre>
+        </div>
+        <div class='function' id='shift'>
+          <p>
+            <strong class='name'>shift</strong>
+            <code>_.shift(array)</code>
+          </p>
+          <p class='description'>Removes and returns the first item in an array</p>
+          <pre class='example'>_.shift({1,2,3})&#x000A;=> 1</pre>
+        </div>
+        <div class='function' id='unshift'>
+          <p>
+            <strong class='name'>unshift</strong>
+            <code>_.unshift(array, item)</code>
+          </p>
+          <p class='description'>Inserts item at the beginning of an array</p>
+          <pre class='example'>_.push({1,2,3}, 4)&#x000A;=> {4,1,2,3}</pre>
+        </div>
         <div class='function' id='join'>
           <p>
             <strong class='name'>join</strong>
@@ -431,6 +477,14 @@
           <pre class='example'>_.is_empty({}) &#x000A;=> true &#x000A;-.is_empty({ name = "moe" }) &#x000A;=> false</pre>
         </div>
         <h3>Function Functions</h3>
+        <div class='function' id='curry'>
+          <p>
+            <strong class='name'>curry</strong>
+            <code>_.curry(func, arg)</code>
+          </p>
+          <p class='description'>Creates a wrapper function substituing the supplied arg for the first argument in original function.</p>
+          <pre class='example'>function f(p1,p2) return {p1,p2} end&#x000A;g = _.curry(f, "a")&#x000A;g("b")&#x000A;=> {"a","b"}&#x000A;g("c")&#x000A;=> {"a","c"}</pre>
+        </div>
         <div class='function' id='wrap'>
           <p>
             <strong class='name'>wrap</strong>
@@ -464,14 +518,6 @@
           <p class='description'>Identity function, simply returns whatever is passed in. This function looks useless, but is used within Underscore as a default function.</p>
           <pre class='example'>_.identity("foo") &#x000A;=> "foo"</pre>
         </div>
-        <div class='function' id='no_conflict'>
-          <p>
-            <strong class='name'>no_conflict</strong>
-            <code>_.no_conflict()</code>
-          </p>
-          <p class='description'>Restores the _ variable and returns the _ object so that it can be assigned to another variable.</p>
-          <pre class='example'>us = _.no_conflict() &#x000A;us.each({1,2,3}, print)</pre>
-        </div>
         <div class='function' id='iter'>
           <p>
             <strong class='name'>iter</strong>
@@ -479,6 +525,22 @@
           </p>
           <p class='description'>Creates an iterator function over an array.</p>
           <pre class='example'>for i in _.iter({1,2,3}) do&#x000A;  print(i)&#x000A;end</pre>
+        </div>
+        <div class='function' id='range'>
+          <p>
+            <strong class='name'>range</strong>
+            <code>_.range(start_or_length, [end], [step])</code>
+          </p>
+          <p class='description'>Iterates over a range of integers</p>
+          <pre class='example'>_.range(5,10):to_array()&#x000A;=> { 5,6,7,8,9,10 }&#x000A;_.range(10):to_array()&#x000A;=> { 1,2,3,4,5,6,7,8,9,10 }&#x000A;_.range(2,10,2):to_array()&#x000A;=> { 2,4,6,8,10 }&#x000A;_.range(10,2,-2):to_array()&#x000A;=> { 10,8,6,4,2 }</pre>
+        </div>
+        <div class='function' id='is_equal'>
+          <p>
+            <strong class='name'>is_equal</strong>
+            <code>_.is_equal(o1,o2,[ignore_mt])</code>
+          </p>
+          <p class='description'>Performs an optimized deep comparison between the two objects, to determine if they should be considered equal. By default it uses the _eql metamethod if it is present.</p>
+          <pre class='example'>_.is_equal({1,2,3},{1,2,3})&#x000A;=> true&#x000A;_.is_equal({a=1,b=2},{a=1,b=2})&#x000A;=> true&#x000A;_.is_equal({a=1,b=2},{a=2,b=3})&#x000A;=> false</pre>
         </div>
         <h3>Chaining Functions</h3>
         <div class='function' id='chain'>
