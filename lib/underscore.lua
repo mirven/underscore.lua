@@ -325,14 +325,14 @@ function Underscore.funcs.is_empty(obj)
 	return next(obj) == nil
 end
 
--- Lifted from penlight's deepcompare() -- http://luaforge.net/projects/penlight/
+-- Originally based on penlight's deepcompare() -- http://luaforge.net/projects/penlight/
 function Underscore.funcs.is_equal(o1, o2, ignore_mt)
 	local ty1 = type(o1)
 	local ty2 = type(o2)
 	if ty1 ~= ty2 then return false end
 	
 	-- non-table types can be directly compared
-	if ty1 ~= 'table' and ty2 ~= 'table' then return o1 == o2 end
+	if ty1 ~= 'table' then return o1 == o2 end
 	
 	-- as well as tables which have the metamethod __eq
 	local mt = getmetatable(o1)
@@ -342,11 +342,11 @@ function Underscore.funcs.is_equal(o1, o2, ignore_mt)
 	
 	for k1,v1 in pairs(o1) do
 		local v2 = o2[k1]
-		if v2 == nil or not is_equal(v1,v2) then return false end
+		if v2 == nil or not is_equal(v1,v2, ignore_mt) then return false end
 	end
 	for k2,v2 in pairs(o2) do
 		local v1 = o1[k2]
-		if v1 == nil or not is_equal(v1,v2) then return false end
+		if v1 == nil then return false end
 	end
 	return true
 end
