@@ -269,6 +269,10 @@ function Underscore.funcs.pop(array)
 	return table.remove(array)
 end
 
+function Underscore.funcs.shift(array)
+	return table.remove(array, 1)
+end
+
 function Underscore.funcs.join(array, separator)
 	return table.concat(array, separator)
 end
