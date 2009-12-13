@@ -48,6 +48,20 @@
           %a{ :href => "http://github.com/mirven/underscore.lua" } available
           at Github.
 
+        %h2 Basic Usage
+        %pre
+          :preserve
+            _ = require 'underscore'
+            _.each({1,2,3}, print)
+        %p 
+          It is idiomatic in Lua to use the underscore character for throw away 
+          variables so you can simply assign it to another variable name such as:
+        
+        %pre
+          :preserve
+            __ = require 'underscore'
+            __.each({1,2,3}, print)
+
         %h2 Iterator Functions and Arrays
         %p All the iterator functions can take either an iterator such as:
         %pre

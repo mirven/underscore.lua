@@ -120,9 +120,6 @@
             <a href='#identity'>identity</a>
           </li>
           <li>
-            <a href='#no_conflict'>no_conflict</a>
-          </li>
-          <li>
             <a href='#iter'>iter</a>
           </li>
         </ul>
@@ -159,6 +156,13 @@
           <a href='http://github.com/mirven/underscore.lua'>available</a>
           at Github.
         </p>
+        <h2>Basic Usage</h2>
+        <pre>_ = require 'underscore'&#x000A;_.each({1,2,3}, print)</pre>
+        <p>
+          It is idiomatic in Lua to use the underscore character for throw away
+          variables so you can simply assign it to another variable name such as:
+        </p>
+        <pre>__ = require 'underscore'&#x000A;__.each({1,2,3}, print)&#x000A;</pre>
         <h2>Iterator Functions and Arrays</h2>
         <p>All the iterator functions can take either an iterator such as:</p>
         <pre>function sq(n)&#x000A;  return coroutine.wrap(function() &#x000A;    for i=1,n do&#x000A;      coroutine.yield(i*i)&#x000A;    end&#x000A;  end)&#x000A;end&#x000A;&#x000A;_.each(sq(5), print)&#x000A;=> 1&#x000A;=> 4&#x000A;=> 9&#x000A;=> 16&#x000A;=> 25&#x000A;</pre>
@@ -463,14 +467,6 @@
           </p>
           <p class='description'>Identity function, simply returns whatever is passed in. This function looks useless, but is used within Underscore as a default function.</p>
           <pre class='example'>_.identity("foo") &#x000A;=> "foo"</pre>
-        </div>
-        <div class='function' id='no_conflict'>
-          <p>
-            <strong class='name'>no_conflict</strong>
-            <code>_.no_conflict()</code>
-          </p>
-          <p class='description'>Restores the _ variable and returns the _ object so that it can be assigned to another variable.</p>
-          <pre class='example'>us = _.no_conflict() &#x000A;us.each({1,2,3}, print)</pre>
         </div>
         <div class='function' id='iter'>
           <p>
