@@ -395,7 +395,4 @@ end
 
 wrap_functions_for_oo_support()
 
-underscore = Underscore:new()
-
-return underscore
-
+return Underscore:new()
