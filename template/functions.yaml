@@ -236,7 +236,7 @@ array_functions:
         _.rest({1,2,3}, 2) 
         => {3}
 
-    - name:      
+    - name:
         slice
       params:
         array, start_index, length
@@ -246,7 +246,7 @@ array_functions:
         _.slice({ 1, 2, 3, 4, 5 }, 2, 3) 
         => { 2, 3, 4 }
 
-    - name:      
+    - name:
         push
       params:
         array, item
@@ -255,7 +255,37 @@ array_functions:
       example: |
         _.push({1,2,3}, 4)
         => {1,2,3,4}
-      
+
+    - name:
+        pop
+      params:
+        array
+      description:
+        Removes and returns the last item in an array
+      example: |
+        _.pop({1,2,3})
+        => 3
+
+    - name:
+        shift
+      params:
+        array
+      description:
+        Removes and returns the first item in an array
+      example: |
+        _.shift({1,2,3})
+        => 1
+
+    - name:
+        unshift
+      params:
+        array, item
+      description:
+        Inserts item at the beginning of an array
+      example: |
+        _.push({1,2,3}, 4)
+        => {4,1,2,3}
+              
     - name:      
         join
       params:
@@ -314,7 +344,20 @@ table_functions:
         => false      
 function_functions:
   pretty: Function Functions
-  functions:    
+  functions:
+    - name:
+        curry
+      params:
+        func, arg
+      description:
+        Creates a wrapper function substituing the supplied arg for the first argument in original function.
+      example: |
+        function f(p1,p2) return {p1,p2} end
+        g = _.curry(f, "a")
+        g("b")
+        => {"a","b"}
+        g("c")
+        => {"a","c"}
     - name: 
         wrap
       params: 
@@ -375,6 +418,38 @@ utility_functions:
         for i in _.iter({1,2,3}) do
           print(i)
         end
+
+    - name: 
+        range
+      params:
+        start_or_length, [end], [step]
+      description:
+        Iterates over a range of integers
+      example: |  
+        _.range(5,10):to_array()
+        => { 5,6,7,8,9,10 }
+        _.range(10):to_array()
+        => { 1,2,3,4,5,6,7,8,9,10 }
+        _.range(2,10,2):to_array()
+        => { 2,4,6,8,10 }
+        _.range(10,2,-2):to_array()
+        => { 10,8,6,4,2 }
+
+    - name: 
+        is_equal
+      params:
+        o1,o2,[ignore_mt]
+      description:
+        Performs an optimized deep comparison between the two objects, to determine 
+        if they should be considered equal. By default it uses the _eql metamethod if it
+        is present.
+      example: |  
+        _.is_equal({1,2,3},{1,2,3})
+        => true
+        _.is_equal({a=1,b=2},{a=1,b=2})
+        => true
+        _.is_equal({a=1,b=2},{a=2,b=3})
+        => false
 
 chaining_functions:
   pretty: Chaining Functions
