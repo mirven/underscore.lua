@@ -45,6 +45,20 @@ function Underscore.iter(list_or_iter)
 	end)
 end
 
+function Underscore.range(start_i, end_i, step)
+	if end_i == nil then
+		end_i = start_i
+		start_i = 1
+	end
+	step = step or 1
+	local range_iter = coroutine.wrap(function() 
+		for i=start_i, end_i, step do
+			coroutine.yield(i)
+		end
+	end)
+	return Underscore:new(range_iter)
+end
+
 --- Identity function. This function looks useless, but is used throughout Underscore as a default.
 -- @name _.identity
 -- @param value any object
