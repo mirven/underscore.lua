@@ -261,7 +261,7 @@ function Underscore.funcs.flatten(array)
 end
 
 function Underscore.funcs.push(array, item)
-	array[#array+1] = item
+	table.insert(array, item)
 	return array
 end
 
@@ -271,6 +271,11 @@ end
 
 function Underscore.funcs.shift(array)
 	return table.remove(array, 1)
+end
+
+function Underscore.funcs.unshift(array, item)
+	table.insert(array, 1, item)
+	return array
 end
 
 function Underscore.funcs.join(array, separator)
