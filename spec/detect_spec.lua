@@ -1,5 +1,4 @@
-require 'luaspec'
-_ = require 'underscore'
+require 'spec_helper'
 
 describe["_.detect"] = function()
 	it["should return the first element that passes the test"] = function()

@@ -1,6 +1,4 @@
-require 'luaspec'
-require 'luamock'
-_ = require 'underscore'
+require 'spec_helper'
 
 describe["_.compose"] = function()
 	it["should create a function that when called calls all the functions like f(g(h()))"] = function()

@@ -1,6 +1,4 @@
-require 'luaspec'
-require 'luamock'
-_ = require 'underscore'
+require 'spec_helper'
 
 describe["_.each"] = function()
 	before = function()

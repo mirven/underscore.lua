@@ -1,5 +1,4 @@
-require 'luaspec'
-_ = require 'underscore'
+require 'spec_helper'
 
 describe["_.flatten"] = function()
 	before = function()
@@ -8,8 +7,7 @@ describe["_.flatten"] = function()
 	end
 	
 	it["should return an array with each item"] = function()
-		expect(#result).should_be(7)
-		_.each(result, function(i) expect(i).should_be(i) end)
+		expect(result).should_equal {1,2,3,4,5,6,7}
 	end
 end
 

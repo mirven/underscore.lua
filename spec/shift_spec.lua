@@ -1,5 +1,4 @@
-require 'luaspec'
-_ = require 'underscore'
+require 'spec_helper'
 
 describe["_.shift"] = function()
 	before = function()
@@ -12,8 +11,7 @@ describe["_.shift"] = function()
 	end	
 	
 	it["should remove the first item from the array"] = function()
-		expect(#input).should_be(1)
-		expect(input[1]).should_be(2)
+		expect(input).should_equal {2}
 	end
 end
 

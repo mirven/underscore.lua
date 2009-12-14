@@ -1,5 +1,4 @@
-require 'luaspec'
-_ = require 'underscore'
+require 'spec_helper'
 
 describe["_.max"] = function()
 	describe["when not providing a transformation function"] = function()

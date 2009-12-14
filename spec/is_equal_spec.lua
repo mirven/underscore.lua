@@ -1,5 +1,4 @@
-require 'luaspec'
-_ = require 'underscore'
+require 'spec_helper'
 
 describe["_.is_equal"] = function()
 	describe["when objects are different types"] = function()

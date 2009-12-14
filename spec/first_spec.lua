@@ -1,5 +1,4 @@
-require 'luaspec'
-_ = require 'underscore'
+require 'spec_helper'
 
 describe["_.first"] = function()
 	it["should return the first item"] = function()
@@ -12,9 +11,7 @@ describe["_.first"] = function()
 		it["should return an array with the first n items"] = function()
 			input = { 1,2,3,4 }
 			result = _.first(input,2)
-			expect(#result).should_be(2)
-			expect(result[1]).should_be(1)
-			expect(result[2]).should_be(2)
+			expect(result).should_equal {1,2}
 		end
 	end
 end

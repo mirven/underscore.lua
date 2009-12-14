@@ -1,5 +1,4 @@
-require 'luaspec'
-_ = require 'underscore'
+require 'spec_helper'
 
 describe["_.pop"] = function()
 	before = function()
@@ -12,8 +11,7 @@ describe["_.pop"] = function()
 	end	
 	
 	it["should remove the last item from the array"] = function()
-		expect(#input).should_be(1)
-		expect(input[1]).should_be(1)
+		expect(input).should_equal {1}
 	end
 end
 

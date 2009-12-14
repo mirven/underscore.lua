@@ -1,5 +1,4 @@
-require 'luaspec'
-_ = require 'underscore'
+require 'spec_helper'
 
 describe["_.slice"] = function()
 	before = function()
@@ -20,10 +19,7 @@ describe["_.slice"] = function()
 		end
 	
 		it["should return all the values of the input after the specified index"] = function()
-			expect(#result).should_be(3)
-			expect(result[1]).should_be(2)
-			expect(result[2]).should_be(3)
-			expect(result[3]).should_be(4)
+			expect(result).should_equal {2,3,4}
 		end
 	end
 end

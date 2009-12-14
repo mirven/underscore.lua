@@ -1,5 +1,4 @@
-require 'luaspec'
-_ = require 'underscore'
+require 'spec_helper'
 
 describe["_.unshift"] = function()
 	before = function()
@@ -8,10 +7,7 @@ describe["_.unshift"] = function()
 	end
 	
 	it["should add the item onto the beginning of the array"] = function()		
-		expect(#result).should_be(3)
-		expect(result[1]).should_be(3)
-		expect(result[2]).should_be(1)
-		expect(result[3]).should_be(2)
+		expect(result).should_equal {3,1,2}
 	end	
 	
 	it["should return the input array"] = function()

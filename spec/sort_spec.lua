@@ -1,5 +1,4 @@
-require 'luaspec'
-_ = require 'underscore'
+require 'spec_helper'
 
 describe["_.sort"] = function()
 	describe["when not providing a comparison function"] = function()
@@ -9,10 +8,7 @@ describe["_.sort"] = function()
 		end
 		
 		it["should return an array sorted by <"] = function()
-			expect(#result).should_be(3)
-			expect(result[1]).should_be(1)
-			expect(result[2]).should_be(2)
-			expect(result[3]).should_be(3)
+			expect(result).should_equal {1,2,3}
 		end
 	end
 	
@@ -26,10 +22,7 @@ describe["_.sort"] = function()
 		end
 		
 		it["should return the items sorted by the comparison function"] = function()
-			expect(#result).should_be(3)
-			expect(result[1]).should_be(i2)
-			expect(result[2]).should_be(i1)
-			expect(result[3]).should_be(i3)
+			expect(result).should_equal {i2,i1,i3}
 		end
 	end
 end

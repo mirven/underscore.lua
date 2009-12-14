@@ -1,5 +1,4 @@
-require 'luaspec'
-_ = require 'underscore'
+require 'spec_helper'
 
 describe["_.iter"] = function()
 	describe["when passed an array"] = function()
@@ -10,11 +9,8 @@ describe["_.iter"] = function()
 			for i in _.iter(input) do
 				output[#output+1] = i
 			end
-		
-			expect(#output).should_be(3)
-			expect(output[1]).should_be(1)
-			expect(output[2]).should_be(2)
-			expect(output[3]).should_be(3)
+			
+			expect(output).should_equal {1,2,3}
 		end
 	end
 
@@ -32,11 +28,8 @@ describe["_.iter"] = function()
 			for i in _.iter(sq(3)) do
 				output[#output+1] = i
 			end
-		
-			expect(#output).should_be(3)
-			expect(output[1]).should_be(1)
-			expect(output[2]).should_be(4)
-			expect(output[3]).should_be(9)
+
+			expect(output).should_equal {1,4,9}
 		end
 	end
 end

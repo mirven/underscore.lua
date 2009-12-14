@@ -1,5 +1,4 @@
-require 'luaspec'
-_ = require 'underscore'
+require 'spec_helper'
 
 describe["_.is_empty"] = function()
 	it["should return false when the table has elements in it"] = function()

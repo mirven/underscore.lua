@@ -1,5 +1,4 @@
-require 'luaspec'
-_ = require 'underscore'
+require 'spec_helper'
 
 describe["_.to_array"] = function()
 	before = function()
@@ -15,10 +14,7 @@ describe["_.to_array"] = function()
 	end
 	
 	it["should return the values produced by the iterator in an array"] = function()
-		expect(#result).should_be(3)
-		expect(result[1]).should_be(1)
-		expect(result[2]).should_be(4)
-		expect(result[3]).should_be(9)
+		expect(result).should_equal {1,4,9}
 	end
 end
 

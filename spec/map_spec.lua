@@ -1,5 +1,4 @@
-require 'luaspec'
-_ = require 'underscore'
+require 'spec_helper'
 
 describe["_.map"] = function()
 	before = function()
@@ -8,10 +7,7 @@ describe["_.map"] = function()
 	end
 	
 	it["should return an array of the same size with all elements transformed by the function"] = function()
-		expect(#result).should_be(3)
-		expect(result[1]).should_be(2)
-		expect(result[2]).should_be(4)
-		expect(result[3]).should_be(6)
+		expect(result).should_equal {2,4,6}
 	end
 end
 

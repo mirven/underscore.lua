@@ -1,5 +1,4 @@
-require 'luaspec'
-_ = require 'underscore'
+require 'spec_helper'
 
 describe["_.extend"] = function()
 	before = function()
@@ -9,9 +8,7 @@ describe["_.extend"] = function()
 	end
 	
 	it["should add all values from the destination table into the source table"] = function()
-		expect(result.a).should_be(1)
-		expect(result.b).should_be(2)
-		expect(result.c).should_be(3)
+		expect(result).should_equal {a=1,b=2,c=3}
 	end
 	
 	it["should return the source table"] = function()		

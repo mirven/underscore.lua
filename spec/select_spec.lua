@@ -1,5 +1,4 @@
-require 'luaspec'
-_ = require 'underscore'
+require 'spec_helper'
 
 describe["_.select"] = function()
 	before = function()
@@ -8,8 +7,7 @@ describe["_.select"] = function()
 	end
 	
 	it["should return an array with only elements that do pass the truth function"] = function()
-		expect(#result).should_be(1)
-		expect(result[1]).should_be(3)
+		expect(result).should_equal {3}
 	end
 end
 
