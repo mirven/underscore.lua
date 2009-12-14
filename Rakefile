@@ -30,16 +30,15 @@ namespace :rock do
   end
   
   task :release do
-    `cp out/underscore.lua-#{version}.rockspec #{rocks_home}`
-    `cp out/underscore.lua-#{version}.zip #{rocks_home}`
+    puts `cp out/underscore.lua-#{version}.rockspec #{rocks_home}/luarocks`
+    puts `cp out/underscore.lua-#{version}.zip #{rocks_home}/luarocks`
     Dir.chdir rocks_home do
       puts `luarocks-admin  make_manifest luarocks`
       puts `s3sync -r luarocks/ marcusirven:rocks --public-read`
     end
     
     `git tag -a -m "tagging version #{version}" #{version}`
-    `git push origin --tags`
-    
+    `git push origin --tags`    
   end
 end
 
