@@ -97,6 +97,18 @@ function Underscore.funcs.map(list, func)
 	return mapped
 end
 
+function Underscore.funcs.combine(list, func)
+	local mapped = {}
+	local remaining_lists = _.map(_.rest(list), Underscore.iter)
+	for v1 in Underscore.iter(list[1]) do
+		local remaining_vals = _.map(remaining_lists, function (x)
+			return x()
+		end)
+		mapped[#mapped+1] = func(v1, unpack(remaining_vals))
+	end
+	return mapped
+end
+
 function Underscore.funcs.reduce(list, memo, func)	
 	for i in Underscore.iter(list) do
 		memo = func(memo, i)
