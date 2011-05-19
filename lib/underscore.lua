@@ -27,6 +27,8 @@
 local Underscore = { funcs = {} }
 Underscore.__index = Underscore
 
+local nilValue = {}
+
 function Underscore.__call(_, value)
 	return Underscore:new(value)
 end
@@ -377,6 +379,46 @@ end
 function Underscore.funcs.curry(func, argument)
 	return function(...)
 		return func(argument, ...)
+	end
+end
+
+function Underscore.funcs.memoize(func, hasher)
+	local memo = {}
+    hasher = hasher or identity;
+    return function(...)
+		local key = hasher(this, ...)
+		if memo[key] ~= nil then
+			if memo[key] == nilValue then
+				return nil
+			else
+				return memo[key]
+			end
+		else
+			local result = func(...)
+			memo[key] = result == nil and nilValue or result
+			return result
+		end
+    end
+end
+
+function Underscore.funcs.once(func)
+	local ran = false
+	local memo
+	return function(...)
+		if not ran then
+			memo = func(...)
+			ran = true
+		end
+		return memo
+	end
+end
+-- Returns a function that will only be executed upon being called N times.
+function Underscore.funcs.after(times, func) {
+    return function(...) {
+		times = times - 1
+		if times < 1 then
+			return func(...)
+		end
 	end
 end
 
