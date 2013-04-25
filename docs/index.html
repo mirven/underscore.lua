@@ -184,12 +184,12 @@
         <h2>Iterator Functions and Arrays</h2>
         <p>All the iterator functions can take either an iterator such as:</p>
         <pre>function sq(n)&#x000A;  return coroutine.wrap(function() &#x000A;    for i=1,n do&#x000A;      coroutine.yield(i*i)&#x000A;    end&#x000A;  end)&#x000A;end&#x000A;&#x000A;_.each(sq(5), print)&#x000A;=> 1&#x000A;=> 4&#x000A;=> 9&#x000A;=> 16&#x000A;=> 25&#x000A;</pre>
-        <p>or and array such as:</p>
+        <p>or an array such as:</p>
         <pre>_.each({1,2,3,4,5}, print)&#x000A;=> 1&#x000A;=> 2&#x000A;=> 3&#x000A;=> 4&#x000A;=> 5&#x000A;</pre>
         <p>
           This is accomplished with
           <code>_.iter()</code>
-          which with create an iterator over and array or if passed a function it will use that.
+          which will create an iterator over an array or use a function if passed one.
         </p>
         <pre>for i in _.iter({1,2,3,4,5}) do&#x000A;  print(i)&#x000A;end&#x000A;=> 1&#x000A;=> 2&#x000A;=> 3&#x000A;=> 4&#x000A;=> 5&#x000A;</pre>
         <h2>Object-Oriented and Functional Styles</h2>
@@ -267,7 +267,7 @@
             <strong class='name'>pluck</strong>
             <code>_.pluck(iter, property_name)</code>
           </p>
-          <p class='description'>An convenient version of the common use-case of mapextracting a list of properties.</p>
+          <p class='description'>A convenient version of the common use-case of map-extracting a list of properties.</p>
           <pre class='example'>_.pluck({ {id=1}, {id=2}, {id=3} }, 'id') &#x000A;=> { 1, 2, 3 }</pre>
         </div>
         <div class='function' id='reduce'>
@@ -287,7 +287,7 @@
             <strong class='name'>max</strong>
             <code>_.max(iter, [func])</code>
           </p>
-          <p class='description'>Returns the item with the largest value. If a func is provided it will be used on each value to generate the criterion by which the value is ranked.</p>
+          <p class='description'>Returns the item with the largest value. If func is provided it will be used on each value to generate the criterion by which the value is ranked.</p>
           <pre class='example'>_.max({1,2,3,4}) &#x000A;=> 4&#x000A;_.max({ {age=15}, {age=12}, {age=19} }, function(p) return p.age end) &#x000A;=> {age=19}</pre>
         </div>
         <div class='function' id='min'>
@@ -295,7 +295,7 @@
             <strong class='name'>min</strong>
             <code>_.min(iter, [func])</code>
           </p>
-          <p class='description'>Returns the item with the smallest value. If a func is provided it will be used on each value to generate the criterion by which the value is ranked.</p>
+          <p class='description'>Returns the item with the smallest value. If func is provided it will be used on each value to generate the criterion by which the value is ranked.</p>
           <pre class='example'>_.max({1,2,3,4}) &#x000A;=> 1&#x000A;_.max({ {age=15}, {age=12}, {age=19} }, function(p) return p.age end) &#x000A;=> {age=12}</pre>
         </div>
         <div class='function' id='include'>
@@ -303,7 +303,7 @@
             <strong class='name'>include</strong>
             <code>_.include(iter, value)</code>
           </p>
-          <p class='description'>Returns true if the list include's value. Uses the == operator.</p>
+          <p class='description'>Returns true if the list includes the value. Uses the == operator.</p>
           <pre class='example'>_.include({1,2,3,4}, function(i) return i%2 == 0 end)&#x000A;=> true&#x000A;_.include({1,3,5}, function(i) return i%2 == 0 end)&#x000A;=> false</pre>
         </div>
         <div class='function' id='detect'>
@@ -323,7 +323,7 @@
               <strong>every</strong>
             </span>
           </p>
-          <p class='description'>Returns true if func(item) returns true for all item in items.</p>
+          <p class='description'>Returns true if func(item) returns true for all items in items.</p>
           <pre class='example'>_.all({2,4,8}, function(i) return i%2 == 0 end)        &#x000A;=> true&#x000A;_.all({1,2,3,4}, function(i) return i%2 == 0 end)        &#x000A;=> false</pre>
         </div>
         <div class='function' id='any'>
@@ -408,7 +408,7 @@
             <strong class='name'>push</strong>
             <code>_.push(array, item)</code>
           </p>
-          <p class='description'>Inserts item at the end of an array</p>
+          <p class='description'>Inserts an item at the end of an array</p>
           <pre class='example'>_.push({1,2,3}, 4)&#x000A;=> {1,2,3,4}</pre>
         </div>
         <div class='function' id='pop'>
@@ -457,7 +457,7 @@
             <strong class='name'>keys</strong>
             <code>_.keys(object)</code>
           </p>
-          <p class='description'>Returns an array of all the property names in a table. (Note: order is not defined)</p>
+          <p class='description'>Returns an array of all the property names in a table. (Note: the order is not defined)</p>
           <pre class='example'>_.keys { name = "John", age = 25 }&#x000A;=> { "name", "age" }</pre>
         </div>
         <div class='function' id='values'>
@@ -465,7 +465,7 @@
             <strong class='name'>values</strong>
             <code>_.values(object)</code>
           </p>
-          <p class='description'>Returns an array of all the property values in a table. (Note: order is not defined)</p>
+          <p class='description'>Returns an array of all the property values in a table. (Note: the order is not defined)</p>
           <pre class='example'>_.values { name = "John", age = 25 }&#x000A;=> { "John", 25 }</pre>
         </div>
         <div class='function' id='is_empty'>
