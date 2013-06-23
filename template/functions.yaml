@@ -6,12 +6,14 @@ iterator_functions:
       aliases:
         - collect
       params: 
-        iter, func
+        iter1, ..., func
       description:
-        Produces a new array by mapping each value in iter through a transformation function.
+        Produces one new array by mapping each value in iter1 etc. through a transformation function. Works for one or multiple iterators.
       example: |
         _.map({1,2,3}, function(i) return i*2 end)
         => { 2,4,6 }
+        _.map({1,2,3}, {3,2,1}, function(a,b) return a+b end)
+        => { 4,4,4 }
 
     - name: 
         each
