@@ -89,11 +89,16 @@ function Underscore.funcs.each(list, func)
 	return list
 end
 
-function Underscore.funcs.map(list, func)
+function Underscore.funcs.map(iter1, ...)
 	local mapped = {}
-	for i in Underscore.iter(list) do
-		mapped[#mapped+1] = func(i)
-	end	
+	local func = arg[arg.n]
+	local remaining_iters = {}
+	for i = 1,arg.n-1 do remaining_iters[i] = Underscore.iter(arg[i]) end
+	for v1 in Underscore.iter(iter1) do
+		local vals = {}
+		for i = 1, #remaining_iters do vals[i] = remaining_iters[i]() end
+		mapped[#mapped+1] = func(v1, unpack(vals))
+	end
 	return mapped
 end
 

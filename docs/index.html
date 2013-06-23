@@ -213,14 +213,14 @@
         <div class='function' id='map'>
           <p>
             <strong class='name'>map</strong>
-            <code>_.map(iter, func)</code>
+            <code>_.map(iter1, ..., func)</code>
             <span class='alias'>
               Aliases:
               <strong>collect</strong>
             </span>
           </p>
-          <p class='description'>Produces a new array by mapping each value in iter through a transformation function.</p>
-          <pre class='example'>_.map({1,2,3}, function(i) return i*2 end)&#x000A;=> { 2,4,6 }</pre>
+          <p class='description'>Produces one new array by mapping each value in iter1 etc. through a transformation function. Works for one or multiple iterators.</p>
+          <pre class='example'>_.map({1,2,3}, function(i) return i*2 end)&#x000A;=> { 2,4,6 }&#x000A;_.map({1,2,3}, {3,2,1}, function(a,b) return a+b end)&#x000A;=> { 4,4,4 }</pre>
         </div>
         <div class='function' id='each'>
           <p>
