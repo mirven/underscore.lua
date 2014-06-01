@@ -1,5 +1,7 @@
 require 'luaspec'
 require 'luamock'
+
+package.path = "../lib/?.lua;" .. package.path
 _ = require 'underscore'
 
 function matchers.should_equal(value, expected)
