@@ -82,6 +82,58 @@ end
 
 -- iter
 
+function Underscore.funcs.gzip(left_iter, right_iter)
+	local left_iter_is_function = type(left_iter) == "function"
+	local right_iter_is_function = type(right_iter) == "function"
+
+	if left_iter_is_function and right_iter_is_function then 
+		return coroutine.wrap(function()
+			local left_item, right_item = left_iter(), right_iter()
+			while left_item ~= nil  and right_item ~= nil do 
+				coroutine.yield(left_item, right_iter)
+				left_item, right_item = left_iter(), right_iter()
+			end
+		end)
+	elseif left_iter_is_function then 
+		return coroutine.wrap(function()
+			local i = 1
+			local left_item , right_item, i = left_iter(), right_iter[i], i + 1
+			while left_item ~= nil  and right_item ~= nil do
+				coroutine.yield(left_item, right_item)
+				left_item , right_item, i = left_iter(), right_iter[i], i + 1
+			end
+		end)
+	elseif right_iter_is_function then
+		return coroutine.wrap(function()
+			local i = 1
+			local left_item , right_item, i = left_iter[i], right_iter(), i + 1
+			while left_item ~= nil and right_item ~= nil do
+				coroutine.yield(left_item, right_item)
+				left_item , right_item, i = left_iter[i], right_iter(), i + 1
+			end
+		end)
+	else 
+		return coroutine.wrap(function()
+			local i = 1
+			local left_item, right_item, i = left_iter[i], right_iter[i], i + 1
+			while left_item ~= nil and right_item ~= nil do
+				coroutine.yield(left_item, right_item)
+				left_item, right_item, i = left_iter[i], right_iter[i], i + 1
+			end
+		end)
+	end
+end
+
+function Underscore.funcs.zip(left_iter, right_iter)
+	local zipped = {}
+	local i = 1
+	for left_item, right_item in Underscore.funcs.gzip(left_iter, right_iter) do 
+		zipped[i] = {left_item, right_item}
+		i = i + 1
+	end
+	return zipped
+end
+
 function Underscore.funcs.each(list, func)
 	for i in Underscore.iter(list) do
 		func(i)
