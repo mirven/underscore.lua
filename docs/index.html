@@ -21,6 +21,9 @@
             <a href='#map'>map</a>
           </li>
           <li>
+            <a href='#combine'>combine</a>
+          </li>
+          <li>
             <a href='#each'>each</a>
           </li>
           <li>
@@ -221,6 +224,14 @@
           </p>
           <p class='description'>Produces a new array by mapping each value in iter through a transformation function.</p>
           <pre class='example'>_.map({1,2,3}, function(i) return i*2 end)&#x000A;=> { 2,4,6 }</pre>
+        </div>
+        <div class='function' id='combine'>
+          <p>
+            <strong class='name'>combine</strong>
+            <code>_.combine(iters, func)</code>
+          </p>
+          <p class='description'>Produces a new array by mapping each value in each array in iters through a transformation function.</p>
+          <pre class='example'>_.combine({ {1,2,3}, {3,2,1}, {1,1,1} }, function(a,b,c) a+b+c end)&#x000A;=> { 5,5,5 }&#x000A;_.combine({ {3,2,1}, {1,1,1,1,1} }, function(a,b) a+b end)&#x000A;=> { 4,3,2 }</pre>
         </div>
         <div class='function' id='each'>
           <p>
