@@ -104,6 +104,10 @@ function Underscore.funcs.reduce(list, memo, func)
 	return memo
 end
 
+function Underscore.funcs.sum(list) 
+	return Underscore.funcs.reduce(list, 0, function(a, b) return a + b end) 
+end
+
 function Underscore.funcs.detect(list, func)
 	for i in Underscore.iter(list) do
 		if func(i) then return i end
