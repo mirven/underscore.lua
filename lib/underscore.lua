@@ -228,7 +228,7 @@ end
 -- usage: simple_reduce({...}, callback), where callback = function(x, y) <body> end
 -- simplifies a reduce function by ditching the memo base case
 -- @param : list_or_iter, following the underscoreLua specs
--- @param : func, a callback of the form x -> y -> z
+-- @param : func, a callback of the form x -> y -> list of z
 -- @return : a list
 Underscore.funcs.simple_reduce = (function()
 	local inner
@@ -255,7 +255,7 @@ end)()
 -- @param : func, a callback that takes the same amount of arguments as there are items in lists_or_iters
 -- the function stops execution immediately upon finding a nil value in any of the items in each of the lists_or_iters
 -- the use of iterators or lists with holes is therefore discouraged, a very useful side-effect of this behaviour is that
--- the function will cater itself towards the iterator or list with the least amout of items
+-- the function will cater itself towards the iterator or list with the least amount of items
 -- @return : a list
 Underscore.funcs.multi_map = (function()
 	local inner
