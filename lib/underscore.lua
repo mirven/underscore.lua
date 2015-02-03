@@ -227,46 +227,46 @@ end
 
 -- usage: simple_reduce({...}, callback), where callback = function(x, y) <body> end
 -- simplifies a reduce function by ditching the memo base case
--- @param list_or_iter, following the underscoreLua specs
--- @param func, a callback of the form x -> y -> z
--- returns a list
+-- @param : list_or_iter, following the underscoreLua specs
+-- @param : func, a callback of the form x -> y -> z
+-- @return : a list
 Underscore.funcs.simple_reduce = (function()
 	local inner
 	inner = function(iter, func, accumulator)
-		local value = iter()
-		if value then
-			accumulator.value = func(accumulator.value, value)
+		local _ = iter()
+		if _ then
+			accumulator.value = func(accumulator.value, _)
 			inner(iter, func, accumulator)
 		end
 	end
-	local red = function(list_or_iter, func)
+	local simple_reduce = function(list_or_iter, func)
 		local accumulator = {}
 		local iter = Underscore.iter(list_or_iter)
 		accumulator.value = iter()
 		inner(iter, func, accumulator)
 		return accumulator.value
 	end
-	return red
+	return simple_reduce
 end)()
 
 -- usage: multi_map({{...}, {...}, ...}, callback), where callback = function(<number of items in arg1>) <body> end
 -- provides a map function for an arbitrary number of lists and/or iterators
--- @param lists_or_iters, a list of lists and/or iterators following the underscoreLua specs
--- @param func, a callback that takes the same amount of arguments as there are items in lists_or_iters
+-- @param : lists_or_iters, a list of lists and/or iterators following the underscoreLua specs
+-- @param : func, a callback that takes the same amount of arguments as there are items in lists_or_iters
 -- the function stops execution immediately upon finding a nil value in any of the items in each of the lists_or_iters
 -- the use of iterators or lists with holes is therefore discouraged, a very useful side-effect of this behaviour is that
 -- the function will cater itself towards the iterator or list with the least amout of items
--- returns a list
+-- @return : a list
 Underscore.funcs.multi_map = (function()
 	local inner
 	inner = function(iters, func, accumulator)
-		local args = {}
-		local arg
+		local _
+		local _s = {}
 		if Underscore.funcs.detect(iters, function(iter)
-			arg = iter()
-			table.insert(args, arg)
-			return not arg end) then return end
-		table.insert(accumulator, func(unpack(args)))
+			_ = iter()
+			table.insert(_s, _)
+			return not _ end) then return end
+		table.insert(accumulator, func(unpack(_s)))
 		inner(iters, func, accumulator)
 	end
 	local multi_map = function(lists_or_iters, func)
