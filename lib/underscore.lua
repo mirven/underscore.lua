@@ -225,6 +225,59 @@ function Underscore.funcs.sort(iter, comparison_func)
 	return array
 end
 
+-- usage: simple_reduce({...}, callback), where callback = function(x, y) <body> end
+-- simplifies a reduce function by ditching the memo base case
+-- @param list_or_iter, following the underscoreLua specs
+-- @param func, a callback of the form x -> y -> z
+-- returns a list
+Underscore.funcs.simple_reduce = (function()
+	local inner
+	inner = function(iter, func, accumulator)
+		local value = iter()
+		if value then
+			accumulator.value = func(accumulator.value, value)
+			inner(iter, func, accumulator)
+		end
+	end
+	local red = function(list_or_iter, func)
+		local accumulator = {}
+		local iter = Underscore.iter(list_or_iter)
+		accumulator.value = iter()
+		inner(iter, func, accumulator)
+		return accumulator.value
+	end
+	return red
+end)()
+
+-- usage: multi_map({{...}, {...}, ...}, callback), where callback = function(<number of items in arg1>) <body> end
+-- provides a map function for an arbitrary number of lists and/or iterators
+-- @param lists_or_iters, a list of lists and/or iterators following the underscoreLua specs
+-- @param func, a callback that takes the same amount of arguments as there are items in lists_or_iters
+-- the function stops execution immediately upon finding a nil value in any of the items in each of the lists_or_iters
+-- the use of iterators or lists with holes is therefore discouraged, a very useful side-effect of this behaviour is that
+-- the function will cater itself towards the iterator or list with the least amout of items
+-- returns a list
+Underscore.funcs.multi_map = (function()
+	local inner
+	inner = function(iters, func, accumulator)
+		local args = {}
+		local arg
+		if Underscore.funcs.detect(iters, function(iter)
+			arg = iter()
+			table.insert(args, arg)
+			return not arg end) then return end
+		table.insert(accumulator, func(unpack(args)))
+		inner(iters, func, accumulator)
+	end
+	local multi_map = function(lists_or_iters, func)
+		local accumulator = {}
+		local iters = Underscore.funcs.map(lists_or_iters, Underscore.iter)
+		inner(iters, func, accumulator)
+		return accumulator
+	end
+	return multi_map
+end)()
+
 -- arrays
 
 function Underscore.funcs.first(array, n)
