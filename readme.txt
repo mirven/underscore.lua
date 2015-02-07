@@ -1,6 +1,7 @@
 A Lua version of http://documentcloud.github.com/underscore/, see http://mirven.github.com/underscore.lua/ for more information.
 
-Contains three additions to the core underscore.lua: simple_reduce, multi_map and table_iterator.
+This fork contains three additions to the core underscore.lua:
+simple_reduce, multi_map and table_iterator.
 
 simple_reduce doesn't require a base case,
 it uses the first yield of an iterator passed to it instead.
