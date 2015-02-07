@@ -59,6 +59,14 @@ function Underscore.range(start_i, end_i, step)
 	return Underscore:new(range_iter)
 end
 
+-- adds a universal table iterator
+Underscore.table_iterator = function(table)
+	return coroutine.wrap(function() 
+	for key, value in pairs(table) do
+		coroutine.yield({key = key, value = value}) end
+	end)
+end
+
 --- Identity function. This function looks useless, but is used throughout Underscore as a default.
 -- @name _.identity
 -- @param value any object
@@ -262,12 +270,12 @@ Underscore.funcs.multi_map = (function()
 	inner = function(iters, func, accumulator)
 		local _
 		local _s = {}
-		if Underscore.funcs.detect(iters, function(iter)
+		if Underscore.funcs.all(iters, function(iter)
 			_ = iter()
 			table.insert(_s, _)
-			return not _ end) then return end
+			return _ end) then
 		table.insert(accumulator, func(unpack(_s)))
-		inner(iters, func, accumulator)
+		inner(iters, func, accumulator) end
 	end
 	local multi_map = function(lists_or_iters, func)
 		local accumulator = {}
