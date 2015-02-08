@@ -244,7 +244,7 @@ Underscore.funcs.simple_reduce = (function()
 		local _ = iter()
 		if _ then
 			accumulator.value = func(accumulator.value, _)
-			inner(iter, func, accumulator)
+			return inner(iter, func, accumulator)
 		end
 	end
 	local simple_reduce = function(list_or_iter, func)
@@ -275,7 +275,7 @@ Underscore.funcs.multi_map = (function()
 			table.insert(_s, _)
 			return _ end) then
 		table.insert(accumulator, func(unpack(_s)))
-		inner(iters, func, accumulator) end
+		return inner(iters, func, accumulator) end
 	end
 	local multi_map = function(lists_or_iters, func)
 		local accumulator = {}
