@@ -244,16 +244,14 @@ Underscore.funcs.simple_reduce = (function()
 		local _ = iter()
 		if _ then
 			accumulator.value = func(accumulator.value, _)
-			return inner(iter, func, accumulator)
-		end
+			return inner(iter, func, accumulator) end
 	end
 	local simple_reduce = function(list_or_iter, func)
 		local accumulator = {}
 		local iter = Underscore.iter(list_or_iter)
 		accumulator.value = iter()
 		inner(iter, func, accumulator)
-		return accumulator.value
-	end
+		return accumulator.value end
 	return simple_reduce
 end)()
 
@@ -281,9 +279,25 @@ Underscore.funcs.multi_map = (function()
 		local accumulator = {}
 		local iters = Underscore.funcs.map(lists_or_iters, Underscore.iter)
 		inner(iters, func, accumulator)
-		return accumulator
-	end
+		return accumulator end
 	return multi_map
+end)()
+
+Underscore.funcs.each_while = (function()
+	local each_while = function (lists_or_iters, func, predicate)
+		func = Underscore.funcs.wrap(func, function(callback, ...)
+			local go = predicate(...)
+			if go then callback(...) end
+			return go end)
+		Underscore.funcs.all(lists_or_iters, func) end
+	return each_while
+end)()
+
+Underscore.funcs.each_untill = (function()
+	local each_untill = function (lists_or_iters, func, predicate)
+		predicate = Underscore.funcs.negate(predicate)
+		Underscore.funcs.each_while(lists_or_iters, func, predicate) end
+	return each_untill
 end)()
 
 -- arrays
@@ -440,6 +454,14 @@ function Underscore.funcs.curry(func, argument)
 		return func(argument, ...)
 	end
 end
+
+Underscore.funcs.negate = (function()
+	local negate = function (predicate)
+			predicate = Underscore.funcs.wrap(predicate, function(callback, ...)
+			return not callback(...) end)
+		return predicate end
+	return negate
+end)()
 
 function Underscore.functions() 
 	return Underscore.keys(Underscore.funcs)
