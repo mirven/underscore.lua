@@ -239,19 +239,10 @@ end
 -- @param : func, a callback of the form x -> y -> list of z
 -- @return : a list
 Underscore.funcs.simple_reduce = (function()
-	local inner
-	inner = function(iter, func, accumulator)
-		local _ = iter()
-		if _ then
-			accumulator.value = func(accumulator.value, _)
-			return inner(iter, func, accumulator) end
-	end
 	local simple_reduce = function(list_or_iter, func)
-		local accumulator = {}
 		local iter = Underscore.iter(list_or_iter)
-		accumulator.value = iter()
-		inner(iter, func, accumulator)
-		return accumulator.value end
+		local _ = iter()
+		return Underscore.funcs.reduce(iter, _, func) end
 	return simple_reduce
 end)()
 
