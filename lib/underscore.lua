@@ -90,12 +90,19 @@ end
 
 -- iter
 
-function Underscore.funcs.each(list, func)
-	for i in Underscore.iter(list) do
-		func(i)
+Underscore.funcs.each = (function()
+	local inner
+	inner = function(iter, func)
+		local _ = iter()
+		if _ then
+			func(_)
+			return inner(iter, func) end
 	end
-	return list
-end
+	local each = function(list_or_iter, func)
+		inner(Underscore.iter(list_or_iter), func)
+		return list_or_iter end
+	return each
+end)()
 
 function Underscore.funcs.map(list, func)
 	local mapped = {}
@@ -218,9 +225,7 @@ end
 
 function Underscore.funcs.reverse(list)
 	local reversed = {}
-	for i in Underscore.iter(list) do
-		table.insert(reversed, 1, i)
-	end	
+	Underscore.funcs.each(list, function(item) table.insert(reversed, 1, item) end)
 	return reversed
 end
 
