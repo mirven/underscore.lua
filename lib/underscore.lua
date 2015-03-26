@@ -59,6 +59,19 @@ function Underscore.range(start_i, end_i, step)
 	return Underscore:new(range_iter)
 end
 
+function Underscore.rangeV2(start_i, end_i, step)
+	if end_i == nil then
+		end_i = start_i
+		start_i = 1
+	end
+	step = step or 1
+	return coroutine.wrap(function() 
+		for i=start_i, end_i, step do
+			coroutine.yield(i)
+		end
+	end)
+end
+
 -- adds a universal table iterator
 Underscore.table_iterator = function(table)
 	return coroutine.wrap(function() 
@@ -286,6 +299,14 @@ Underscore.funcs.multi_map = (function()
 		inner(iters, func, accumulator)
 		return accumulator end
 	return multi_map end)()
+
+-- our classic zip function, has almost the same signature as multi-map, but omits the callback
+Underscore.funcs.zip = (function()
+	local zip = function (lists_or_iters)
+		return Underscore.funcs.multi_map(lists_or_iters, function(...) return {...} end)
+	end
+	return zip
+end)()
 
 Underscore.funcs.each_while = (function()
 	local each_while = function (lists_or_iters, func, predicate)
