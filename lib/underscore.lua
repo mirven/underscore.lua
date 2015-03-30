@@ -478,6 +478,14 @@ function Underscore.funcs.curry(func, argument)
 	end
 end
 
+Underscore.funcs.multi_curry = (function()
+	local multi_curry = function (func, ...)
+		Underscore.funcs.each ({...}, function (arg) func = Underscore.funcs.curry(func, arg) end)
+		return function(...) return func(...) end
+	end
+	return multi_curry
+end)()
+
 Underscore.funcs.negate = (function()
 	local negate = function (predicate)
 			predicate = Underscore.funcs.wrap(predicate, function(callback, ...)
