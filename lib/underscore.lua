@@ -147,7 +147,8 @@ Underscore.funcs.detect_predicate = (function()
 			return condition end))
 		return condition
 	end
-	return detect_predicate end)()
+	return detect_predicate
+end)()
 
 function Underscore.funcs.select(list, func)
 	local selected = {}
@@ -269,7 +270,8 @@ Underscore.funcs.simple_reduce = (function()
 		local iter = Underscore.iter(list_or_iter)
 		local _ = iter()
 		return Underscore.funcs.reduce(iter, _, func) end
-	return simple_reduce end)()
+	return simple_reduce
+end)()
 
 -- usage: multi_map({{...}, {...}, ...}, callback), where callback = function(<number of items in arg1>) <body> end
 -- provides a map function for an arbitrary number of lists and/or iterators
@@ -296,7 +298,8 @@ Underscore.funcs.multi_map = (function()
 		local iters = Underscore.funcs.map(lists_or_iters, Underscore.iter)
 		inner(iters, func, accumulator)
 		return accumulator end
-	return multi_map end)()
+	return multi_map
+end)()
 
 -- our classic zip function, has almost the same signature as multi-map, but omits the callback
 Underscore.funcs.zip = (function()
@@ -313,13 +316,15 @@ Underscore.funcs.each_while = (function()
 			if go then callback(...) end
 			return go end)
 		Underscore.funcs.all(lists_or_iters, func) end
-	return each_while end)()
+	return each_while
+end)()
 
 Underscore.funcs.each_untill = (function()
 	local each_untill = function (lists_or_iters, func, predicate)
 		predicate = Underscore.funcs.negate(predicate)
 		Underscore.funcs.each_while(lists_or_iters, func, predicate) end
-	return each_untill end)()
+	return each_untill
+end)()
 
 -- arrays
 
@@ -489,7 +494,8 @@ Underscore.funcs.negate = (function()
 			predicate = Underscore.funcs.wrap(predicate, function(callback, ...)
 			return not callback(...) end)
 		return predicate end
-	return negate end)()
+	return negate
+end)()
 
 function Underscore.functions() 
 	return Underscore.keys(Underscore.funcs)
