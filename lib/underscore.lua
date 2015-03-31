@@ -128,7 +128,7 @@ end
 function Underscore.funcs.reduce(list, memo, func)	
 	for i in Underscore.iter(list) do
 		memo = func(memo, i)
-	end	
+	end
 	return memo
 end
 
@@ -465,7 +465,7 @@ end
 function Underscore.funcs.compose(...)
 	local function call_funcs(funcs, ...)
 		if #funcs > 1 then
-			return funcs[1](call_funcs(_.rest(funcs), ...))
+			return funcs[1](call_funcs(Underscore.funcs.rest(funcs), ...))
 		else
 			return funcs[1](...)
 		end
@@ -505,7 +505,7 @@ Underscore.funcs.negate = (function()
 	return negate
 end)()
 
-function Underscore.functions() 
+function Underscore.functions()
 	return Underscore.keys(Underscore.funcs)
 end
 
@@ -541,7 +541,7 @@ local function wrap_functions_for_oo_support()
 		Underscore[fn] = function(obj_or_self, ...)
 			local obj, chained = value_and_chained(obj_or_self)	
 			return value_or_wrap(func(obj, ...), chained)		
-		end
+		end	 
 	end
 end
 
