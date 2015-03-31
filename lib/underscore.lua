@@ -238,13 +238,11 @@ function Underscore.funcs.max(list, func)
 	end).item
 end
 
-function Underscore.funcs.to_array(list)
-	local array = {}
-	for i in Underscore.iter(list) do
-		array[#array+1] = i
-	end	
-	return array
-end
+Underscore.funcs.to_array = (function ()
+	return function (iter)
+		return Underscore.funcs.map (iter, function (item) return item end)
+	end
+end)()
 
 function Underscore.funcs.reverse(list)
 	local reversed = {}
