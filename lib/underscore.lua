@@ -384,6 +384,14 @@ function Underscore.funcs.pop(array)
 	return table.remove(array)
 end
 
+Underscore.funcs.append = (function ()
+	return function (array, ...)
+		local acc = {unpack (array)}
+		Underscore.funcs.each ({...}, function (item) Underscore.funcs.push (acc, item) end)
+		return acc
+	end
+end)()
+
 function Underscore.funcs.shift(array)
 	return table.remove(array, 1)
 end
@@ -533,7 +541,7 @@ local function wrap_functions_for_oo_support()
 		Underscore[fn] = function(obj_or_self, ...)
 			local obj, chained = value_and_chained(obj_or_self)	
 			return value_or_wrap(func(obj, ...), chained)		
-		end	 
+		end
 	end
 end
 
