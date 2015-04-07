@@ -386,10 +386,33 @@ end
 
 Underscore.funcs.append = (function ()
 	return function (array, ...)
-		local acc = {unpack (array)}
+		local acc = {unpack (array)}  -- identity, abstract away later
 		Underscore.funcs.each ({...}, function (item) Underscore.funcs.push (acc, item) end)
 		return acc
 	end
+end)()
+
+Underscore.funcs.destructive_append = (function ()
+	return function (array, ...)
+		Underscore.funcs.each ({...}, function (item) Underscore.funcs.push (array, item) end)
+		return array
+	end
+end)()
+
+Underscore.funcs.append_all = (function ()
+	return function (array, ...)
+		local acc = {unpack (array)}  -- identity, abstract away later
+		Underscore.funcs.each ({...}, function (item) Underscore.funcs.destructive_append (acc, unpack (item)) end)
+		return acc
+	end
+end)()
+
+Underscore.funcs.flatten_once = (function ()
+	return function (array)
+		if Underscore.funcs.is_empty (array) then return array end
+		local _ = Underscore.funcs.first (array)
+		if #array == 1 then return _ end
+		return Underscore.funcs.append_all (_, unpack (Underscore.funcs.rest (array))) end
 end)()
 
 function Underscore.funcs.shift(array)
