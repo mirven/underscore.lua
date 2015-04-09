@@ -415,6 +415,10 @@ Underscore.funcs.flatten_once = (function ()
 		return Underscore.funcs.append_all (_, unpack (Underscore.funcs.rest (array))) end
 end)()
 
+Underscore.funcs.safe_each = (function ()
+	return function (list, func) return Underscore.funcs.each (Underscore.rangeV2 (1, #list), func) end
+end)()
+
 function Underscore.funcs.shift(array)
 	return table.remove(array, 1)
 end
