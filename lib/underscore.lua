@@ -384,6 +384,12 @@ function Underscore.funcs.pop(array)
 	return table.remove(array)
 end
 
+Underscore.funcs.clear = (function ()
+	return function (array)
+		Underscore.funcs.safe_each (array, function () Underscore.funcs.pop (array) end)
+	end
+end)()
+
 Underscore.funcs.append = (function ()
 	return function (array, ...)
 		local acc = {unpack (array)}  -- identity, abstract away later
@@ -428,9 +434,23 @@ function Underscore.funcs.unshift(array, item)
 	return array
 end
 
+Underscore.funcs.grab = (function ()
+	return function (list, idx) return table.remove(list, idx) end
+end)()
+
 function Underscore.funcs.join(array, separator)
 	return table.concat(array, separator)
 end
+
+Underscore.funcs.shuffle = (function ()
+	return function (list)
+		math.randomseed (os.time ())
+		list = {unpack (list)}
+		local acc = {}
+		Underscore.funcs.safe_each (list, function () Underscore.funcs.push (acc, Underscore.funcs.grab(list, math.random (#list))) end)
+		return acc
+	end
+end)()
 
 -- objects
 
