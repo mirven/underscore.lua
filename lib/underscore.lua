@@ -59,6 +59,27 @@ function Underscore.range(start_i, end_i, step)
 	return Underscore:new(range_iter)
 end
 
+function Underscore.rangeV2(start_i, end_i, step)
+	if end_i == nil then
+		end_i = start_i
+		start_i = 1
+	end
+	step = step or 1
+	return coroutine.wrap(function() 
+		for i=start_i, end_i, step do
+			coroutine.yield(i)
+		end
+	end)
+end
+
+-- adds a universal table iterator
+Underscore.table_iterator = function(table)
+	return coroutine.wrap(function() 
+	for key, value in pairs(table) do
+		coroutine.yield({key = key, value = value}) end
+	end)
+end
+
 --- Identity function. This function looks useless, but is used throughout Underscore as a default.
 -- @name _.identity
 -- @param value any object
@@ -82,12 +103,19 @@ end
 
 -- iter
 
-function Underscore.funcs.each(list, func)
-	for i in Underscore.iter(list) do
-		func(i)
+Underscore.funcs.each = (function()
+	local inner
+	inner = function(iter, func)
+		local _ = iter()
+		if _ then
+			func(_)
+			return inner(iter, func) end
 	end
-	return list
-end
+	local each = function(list_or_iter, func)
+		inner(Underscore.iter(list_or_iter), func)
+		return list_or_iter end
+	return each
+end)()
 
 function Underscore.funcs.map(list, func)
 	local mapped = {}
@@ -100,7 +128,7 @@ end
 function Underscore.funcs.reduce(list, memo, func)	
 	for i in Underscore.iter(list) do
 		memo = func(memo, i)
-	end	
+	end
 	return memo
 end
 
@@ -110,6 +138,17 @@ function Underscore.funcs.detect(list, func)
 	end	
 	return nil	
 end
+
+Underscore.funcs.detect_predicate = (function()
+	local detect_predicate = function(list, func)
+		local condition
+		Underscore.funcs.any(list, Underscore.funcs.wrap(func, function(callback, item)
+			condition = callback(item)
+			return condition end))
+		return condition
+	end
+	return detect_predicate
+end)()
 
 function Underscore.funcs.select(list, func)
 	local selected = {}
@@ -200,19 +239,15 @@ function Underscore.funcs.max(list, func)
 	end).item
 end
 
-function Underscore.funcs.to_array(list)
-	local array = {}
-	for i in Underscore.iter(list) do
-		array[#array+1] = i
-	end	
-	return array
-end
+Underscore.funcs.to_array = (function ()
+	return function (iter)
+		return Underscore.funcs.map (iter, function (item) return item end)
+	end
+end)()
 
 function Underscore.funcs.reverse(list)
 	local reversed = {}
-	for i in Underscore.iter(list) do
-		table.insert(reversed, 1, i)
-	end	
+	Underscore.funcs.each(list, function(item) table.insert(reversed, 1, item) end)
 	return reversed
 end
 
@@ -224,6 +259,72 @@ function Underscore.funcs.sort(iter, comparison_func)
 	table.sort(array, comparison_func)
 	return array
 end
+
+-- usage: simple_reduce({...}, callback), where callback = function(x, y) <body> end
+-- simplifies a reduce function by ditching the memo base case
+-- @param : list_or_iter, following the underscoreLua specs
+-- @param : func, a callback of the form x -> y -> list of z
+-- @return : a list
+Underscore.funcs.simple_reduce = (function()
+	local simple_reduce = function(list_or_iter, func)
+		local iter = Underscore.iter(list_or_iter)
+		local _ = iter()
+		return Underscore.funcs.reduce(iter, _, func) end
+	return simple_reduce
+end)()
+
+-- usage: multi_map({{...}, {...}, ...}, callback), where callback = function(<number of items in arg1>) <body> end
+-- provides a map function for an arbitrary number of lists and/or iterators
+-- @param : lists_or_iters, a list of lists and/or iterators following the underscoreLua specs
+-- @param : func, a callback that takes the same amount of arguments as there are items in lists_or_iters
+-- the function stops execution immediately upon finding a nil value in any of the items in each of the lists_or_iters
+-- the use of iterators or lists with holes is therefore discouraged, a very useful side-effect of this behaviour is that
+-- the function will cater itself towards the iterator or list with the least amount of items
+-- @return : a list
+Underscore.funcs.multi_map = (function()
+	local inner
+	inner = function(iters, func, accumulator)
+		local _
+		local _s = {}
+		if Underscore.funcs.all(iters, function(iter)
+			_ = iter()
+			table.insert(_s, _)
+			return _ end) then
+		table.insert(accumulator, func(unpack(_s)))
+		return inner(iters, func, accumulator) end
+	end
+	local multi_map = function(lists_or_iters, func)
+		local accumulator = {}
+		local iters = Underscore.funcs.map(lists_or_iters, Underscore.iter)
+		inner(iters, func, accumulator)
+		return accumulator end
+	return multi_map
+end)()
+
+-- our classic zip function, has almost the same signature as multi-map, but omits the callback
+Underscore.funcs.zip = (function()
+	local zip = function (lists_or_iters)
+		return Underscore.funcs.multi_map(lists_or_iters, function(...) return {...} end)
+	end
+	return zip
+end)()
+
+Underscore.funcs.each_while = (function()
+	local each_while = function (lists_or_iters, func, predicate)
+		func = Underscore.funcs.wrap(func, function(callback, ...)
+			local go = predicate(...)
+			if go then callback(...) end
+			return go end)
+		Underscore.funcs.all(lists_or_iters, func) end
+	return each_while
+end)()
+
+Underscore.funcs.each_untill = (function()
+	local each_untill = function (lists_or_iters, func, predicate)
+		predicate = Underscore.funcs.negate(predicate)
+		Underscore.funcs.each_while(lists_or_iters, func, predicate) end
+	return each_untill
+end)()
 
 -- arrays
 
@@ -283,6 +384,47 @@ function Underscore.funcs.pop(array)
 	return table.remove(array)
 end
 
+Underscore.funcs.clear = (function ()
+	return function (array)
+		Underscore.funcs.safe_each (array, function () Underscore.funcs.pop (array) end)
+	end
+end)()
+
+Underscore.funcs.append = (function ()
+	return function (array, ...)
+		local acc = {unpack (array)}  -- identity, abstract away later
+		Underscore.funcs.each ({...}, function (item) Underscore.funcs.push (acc, item) end)
+		return acc
+	end
+end)()
+
+Underscore.funcs.destructive_append = (function ()
+	return function (array, ...)
+		Underscore.funcs.each ({...}, function (item) Underscore.funcs.push (array, item) end)
+		return array
+	end
+end)()
+
+Underscore.funcs.append_all = (function ()
+	return function (array, ...)
+		local acc = {unpack (array)}  -- identity, abstract away later
+		Underscore.funcs.each ({...}, function (item) Underscore.funcs.destructive_append (acc, unpack (item)) end)
+		return acc
+	end
+end)()
+
+Underscore.funcs.flatten_once = (function ()
+	return function (array)
+		if Underscore.funcs.is_empty (array) then return array end
+		local _ = Underscore.funcs.first (array)
+		if #array == 1 then return _ end
+		return Underscore.funcs.append_all (_, unpack (Underscore.funcs.rest (array))) end
+end)()
+
+Underscore.funcs.safe_each = (function ()
+	return function (list, func) return Underscore.funcs.each (Underscore.rangeV2 (1, #list), func) end
+end)()
+
 function Underscore.funcs.shift(array)
 	return table.remove(array, 1)
 end
@@ -292,9 +434,23 @@ function Underscore.funcs.unshift(array, item)
 	return array
 end
 
+Underscore.funcs.grab = (function ()
+	return function (list, idx) return table.remove(list, idx) end
+end)()
+
 function Underscore.funcs.join(array, separator)
 	return table.concat(array, separator)
 end
+
+Underscore.funcs.shuffle = (function ()
+	return function (list)
+		math.randomseed (os.time ())
+		list = {unpack (list)}
+		local acc = {}
+		Underscore.funcs.safe_each (list, function () Underscore.funcs.push (acc, Underscore.funcs.grab(list, math.random (#list))) end)
+		return acc
+	end
+end)()
 
 -- objects
 
@@ -356,7 +512,7 @@ end
 function Underscore.funcs.compose(...)
 	local function call_funcs(funcs, ...)
 		if #funcs > 1 then
-			return funcs[1](call_funcs(_.rest(funcs), ...))
+			return funcs[1](call_funcs(Underscore.funcs.rest(funcs), ...))
 		else
 			return funcs[1](...)
 		end
@@ -380,7 +536,23 @@ function Underscore.funcs.curry(func, argument)
 	end
 end
 
-function Underscore.functions() 
+Underscore.funcs.multi_curry = (function()
+	local multi_curry = function (func, ...)
+		Underscore.funcs.each ({...}, function (arg) func = Underscore.funcs.curry(func, arg) end)
+		return function(...) return func(...) end
+	end
+	return multi_curry
+end)()
+
+Underscore.funcs.negate = (function()
+	local negate = function (predicate)
+			predicate = Underscore.funcs.wrap(predicate, function(callback, ...)
+			return not callback(...) end)
+		return predicate end
+	return negate
+end)()
+
+function Underscore.functions()
 	return Underscore.keys(Underscore.funcs)
 end
 
